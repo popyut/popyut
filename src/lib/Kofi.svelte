@@ -26,7 +26,7 @@
       name,
       {
         type: 'floating-chat',
-        'floating-chat.donateButton.text': 'สนับสนุนค่า ☕️',
+        'floating-chat.donateButton.text': 'สนับสนุนค่า☕️',
         'floating-chat.donateButton.background-color': '#ff3e00',
         'floating-chat.donateButton.text-color': '#fff',
       },
