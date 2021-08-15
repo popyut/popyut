@@ -110,7 +110,39 @@
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
-<svelte:head><title>Popyut (Beta)</title></svelte:head>
+
+<svelte:head>
+  <title>POPYUT (Beta)</title>
+
+  <meta name="title" content="POPYUT (Beta)" />
+  <meta name="description" content="POPYUT" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta property="og:url" content="https://popyut.vercel.app" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="POPYUT" />
+  <meta property="og:description" content="POPYUT" />
+  <meta
+    property="og:image"
+    content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
+  />
+  <meta name="twitter:title" content="POPYUT" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta
+    name="twitter:image"
+    content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
+  />
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6FLPY30SGR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-6FLPY30SGR');
+  </script>
+</svelte:head>
 
 <main
   bind:this={main}
@@ -120,7 +152,7 @@
   style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
 >
   <h1 class="noselect text-6xl border-black text-white bg-black rounded p-2 flex items-start">
-    Popyut <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
+    POPYUT <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
   <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">Total: {total}</p>
