@@ -77,6 +77,7 @@
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
+<svelte:head><title>Popyut (Beta)</title></svelte:head>
 
 <main
 	bind:this={main}
@@ -85,7 +86,9 @@
 	on:mouseup={unlockDebounce}
 	style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
 >
-	<h1 class="noselect text-6xl border-black text-white bg-black rounded p-2">Popyut</h1>
+	<h1 class="noselect text-6xl border-black text-white bg-black rounded p-2 flex items-start">
+		Popyut <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
+	</h1>
 	<p class="noselect text-4xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
 
 	<audio bind:this={audio1}>
