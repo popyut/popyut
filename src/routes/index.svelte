@@ -82,6 +82,7 @@
 
   async function submitCount(count: number, countUpdate: number) {
     if (count == 0) {
+      await fetchLeaderboard();
       return;
     }
 
@@ -106,7 +107,7 @@
     const intervalCount = $count - lastCount;
 
     submitCount(intervalCount, $count);
-  }, 5000);
+  }, 6000);
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
