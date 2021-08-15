@@ -149,7 +149,7 @@
     background-size: cover;
   }
 
-  .noselect {
+  * {
     user-select: none; /* supported by Chrome and Opera */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
