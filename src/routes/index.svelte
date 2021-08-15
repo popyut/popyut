@@ -7,6 +7,7 @@
 	let audio2: HTMLAudioElement;
 	let audio3: HTMLAudioElement;
 	let audio4: HTMLAudioElement;
+	let naja: HTMLAudioElement;
 	let audioIndex = 0;
 	let main: HTMLElement;
 	let bgIndex = 0;
@@ -14,6 +15,7 @@
 	function incrementCount() {
 		count.update((n) => n + 1);
 		playPop();
+		playNaja();
 		changeBg();
 	}
 
@@ -38,6 +40,13 @@
 		}
 
 		audioIndex = (audioIndex + 1) % 4;
+	}
+
+	function playNaja() {
+		if ($count % 100 === 0) {
+			naja.currentTime = 0;
+			naja.play();
+		}
 	}
 
 	function changeBg() {
@@ -70,6 +79,10 @@
 
 	<audio bind:this={audio4}>
 		<source src="pop4.ogg" type="audio/ogg" />
+	</audio>
+
+	<audio bind:this={naja}>
+		<source src="naja.mp3" type="audio/mpeg" />
 	</audio>
 </main>
 
