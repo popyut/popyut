@@ -80,7 +80,7 @@
     }
   }
 
-  async function submitCount(count: number) {
+  async function submitCount(count: number, countUpdate: number) {
     if (count == 0) {
       return;
     }
