@@ -18,7 +18,7 @@
   let total = 0;
   let lastCount;
 
-  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+  axios.defaults.headers.post['Origin'] = 'https://prayut.click';
 
   function incrementCount() {
     if (debounceState) {
