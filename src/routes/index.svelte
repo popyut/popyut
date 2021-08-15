@@ -83,11 +83,12 @@
 <main
 	bind:this={main}
 	class="w-full h-screen flex flex-col items-center justify-center"
-	on:click={() => incrementCount(false)}
+	on:mousedown={() => incrementCount(true)}
+	on:mouseup={() => unlockDebounce()}
 	style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
 >
-	<h1 class="text-6xl border-black text-white bg-black rounded p-2">Popyut</h1>
-	<p class="text-4xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
+	<h1 class="noselect text-6xl border-black text-white bg-black rounded p-2">Popyut</h1>
+	<p class="noselect text-4xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
 
 	<audio bind:this={audio1}>
 		<source src="pop1.ogg" type="audio/ogg" />
@@ -112,8 +113,15 @@
 
 <style>
 	main {
-		/* background-image: url('images/p1.jpg'); */
 		background-repeat: no-repeat;
 		background-size: cover;
+	}
+
+	.noselect {
+		user-select: none; /* supported by Chrome and Opera */
+		-webkit-user-select: none; /* Safari */
+		-khtml-user-select: none; /* Konqueror HTML */
+		-moz-user-select: none; /* Firefox */
+		-ms-user-select: none; /* Internet Explorer/Edge */
 	}
 </style>
