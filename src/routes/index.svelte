@@ -17,6 +17,7 @@
   let debounceState = false;
   let total = 0;
   let lastCount;
+  let pps = 0;
 
   axios.defaults.headers.post['Origin'] = 'https://prayut.click';
 
@@ -74,6 +75,7 @@
     try {
       const res = await axios.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
 
+      pps = Math.floor((res.data.total - total) / 6);
       total = res.data.total;
     } catch (e) {
       console.error(e);
@@ -91,6 +93,7 @@
         n: count,
       });
 
+      pps = Math.floor((res.data.total - total) / 6);
       total = res.data.total;
 
       lastCount = countUpdate;
@@ -156,7 +159,9 @@
     POPYUT <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
   <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
-  <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">Total: {total}</p>
+  <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
+    Total: {total} <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${pps} PPS` : ''}</span>
+  </p>
 
   <audio bind:this={audio1}>
     <source src="pop1.ogg" type="audio/ogg" />
