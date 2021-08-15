@@ -4,6 +4,7 @@
   import 'twind/shim';
 
   import { count } from '../lib/store';
+  import Kofi from '../lib/Kofi.svelte';
 
   let audio1: HTMLAudioElement;
   let audio2: HTMLAudioElement;
@@ -138,6 +139,8 @@
   <audio bind:this={naja}>
     <source src="naja.mp3" type="audio/mpeg" />
   </audio>
+
+  <Kofi name="narze" />
 </main>
 
 <style>
