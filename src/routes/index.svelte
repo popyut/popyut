@@ -17,13 +17,11 @@
 
 	axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
-	function incrementCount(debounce: boolean = false) {
-		if (debounce) {
-			if (debounceState) {
-				return;
-			}
-			debounceState = true;
+	function incrementCount() {
+		if (debounceState) {
+			return;
 		}
+		debounceState = true;
 
 		count.update((n) => n + 1);
 		playPop();
@@ -78,13 +76,13 @@
 	onMount(fetchLeaderboard);
 </script>
 
-<svelte:body on:keydown={() => incrementCount(true)} on:keyup={() => unlockDebounce()} />
+<svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
 
 <main
 	bind:this={main}
 	class="w-full h-screen flex flex-col items-center justify-center"
-	on:mousedown={() => incrementCount(true)}
-	on:mouseup={() => unlockDebounce()}
+	on:mousedown={incrementCount}
+	on:mouseup={unlockDebounce}
 	style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
 >
 	<h1 class="noselect text-6xl border-black text-white bg-black rounded p-2">Popyut</h1>
