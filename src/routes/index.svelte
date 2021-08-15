@@ -6,10 +6,13 @@
 	let audio3: HTMLAudioElement;
 	let audio4: HTMLAudioElement;
 	let audioIndex = 0;
+	let main: HTMLElement;
+	let bgIndex = 0;
 
 	function incrementCount() {
 		count++;
 		playPop();
+		changeBg();
 	}
 
 	function playPop() {
@@ -34,13 +37,22 @@
 
 		audioIndex = (audioIndex + 1) % 4;
 	}
+
+	function changeBg() {
+		bgIndex = (bgIndex + 1) % 4;
+	}
 </script>
 
 <svelte:body on:keydown={incrementCount} />
 
-<main class="w-full h-screen flex flex-col items-center justify-center" on:click={incrementCount}>
-	<h1 class="text-6xl">Popyut</h1>
-	<p class="text-4xl">Count: {count}</p>
+<main
+	bind:this={main}
+	class="w-full h-screen flex flex-col items-center justify-center"
+	on:click={incrementCount}
+	style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
+>
+	<h1 class="text-6xl border-black text-white bg-black rounded p-2">Popyut</h1>
+	<p class="text-4xl border-black text-white mt-8 bg-black rounded p-2">Count: {count}</p>
 
 	<audio bind:this={audio1}>
 		<source src="pop1.ogg" type="audio/ogg" />
@@ -58,3 +70,11 @@
 		<source src="pop4.ogg" type="audio/ogg" />
 	</audio>
 </main>
+
+<style>
+	main {
+		/* background-image: url('images/p1.jpg'); */
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+</style>
