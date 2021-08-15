@@ -178,6 +178,19 @@
   </audio>
 
   <Kofi name="narze" />
+
+  <div
+    class="text-xs sm:text-base md:fixed bottom-16 sm:bottom-2 text-right mr-4 w-screen z-10 mb-20 md:mb-0"
+  >
+    <div>
+      <a href="https://github.com/narze/popyut" target="_blank" rel="noreferrer">Github</a> |
+      <a href="https://thailand-grand-opening.web.app" target="_blank" rel="noreferrer"
+        >120วันเปิดประเทศ?</a
+      >
+      |
+      <a href="https://watasalim.vercel.app" target="_blank" rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a>
+    </div>
+  </div>
 </main>
 
 <style>
