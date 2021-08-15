@@ -1,6 +1,8 @@
 <script type="ts">
 	import 'twind/shim';
-	let count: number = 0;
+
+	import { count } from '../lib/store';
+
 	let audio1: HTMLAudioElement;
 	let audio2: HTMLAudioElement;
 	let audio3: HTMLAudioElement;
@@ -10,7 +12,7 @@
 	let bgIndex = 0;
 
 	function incrementCount() {
-		count++;
+		count.update((n) => n + 1);
 		playPop();
 		changeBg();
 	}
@@ -52,7 +54,7 @@
 	style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
 >
 	<h1 class="text-6xl border-black text-white bg-black rounded p-2">Popyut</h1>
-	<p class="text-4xl border-black text-white mt-8 bg-black rounded p-2">Count: {count}</p>
+	<p class="text-4xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
 
 	<audio bind:this={audio1}>
 		<source src="pop1.ogg" type="audio/ogg" />
