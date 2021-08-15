@@ -81,6 +81,10 @@
   }
 
   async function submitCount(count: number) {
+    if (count == 0) {
+      return;
+    }
+
     try {
       const res = await axios.post('https://asia-southeast1-popyut.cloudfunctions.net/clicks', {
         data: { n: count },
