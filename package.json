@@ -28,6 +28,7 @@
   },
   "type": "module",
   "dependencies": {
+    "axios": "^0.21.1",
     "twind": "^0.16.16"
   }
 }

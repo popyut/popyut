@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import axios from 'axios';
 	import 'twind/shim';
 
 	import { count } from '../lib/store';
@@ -11,6 +13,8 @@
 	let audioIndex = 0;
 	let main: HTMLElement;
 	let bgIndex = 0;
+
+	axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 	function incrementCount() {
 		count.update((n) => n + 1);
@@ -52,6 +56,14 @@
 	function changeBg() {
 		bgIndex = (bgIndex + 1) % 4;
 	}
+
+	async function fetchLeaderboard() {
+		const data = await axios.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
+
+		console.log({ data });
+	}
+
+	onMount(fetchLeaderboard);
 </script>
 
 <svelte:body on:keydown={incrementCount} />
