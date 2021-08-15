@@ -87,10 +87,12 @@
 
     try {
       const res = await axios.post('https://asia-southeast1-popyut.cloudfunctions.net/clicks', {
-        data: { n: count },
+        n: count,
       });
 
       total = res.data.total;
+
+      lastCount = countUpdate;
     } catch (e) {
       console.error(e);
     }
@@ -102,9 +104,8 @@
 
   setInterval(() => {
     const intervalCount = $count - lastCount;
-    lastCount = $count;
 
-    submitCount(intervalCount);
+    submitCount(intervalCount, $count);
   }, 5000);
 </script>
 
