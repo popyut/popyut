@@ -90,8 +90,10 @@
     }
 
     try {
+      const t = String(Date.now());
       const res = await axiosInstance.post('https://asia-southeast1-popyut.cloudfunctions.net/clicks', {
         n: count,
+        t,
       });
 
       pps = Math.floor((res.data.total - total) / 6);
