@@ -19,7 +19,7 @@
   let lastCount;
   let pps = 0;
 
-  axios.defaults.headers.post['Origin'] = 'https://prayut.click';
+  const axiosInstance = axios.create();
 
   function incrementCount() {
     if (debounceState) {
@@ -74,7 +74,7 @@
 
   async function fetchLeaderboard() {
     try {
-      const res = await axios.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
+      const res = await axiosInstance.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
 
       pps = Math.floor((res.data.total - total) / 6);
       total = res.data.total;
@@ -90,7 +90,7 @@
     }
 
     try {
-      const res = await axios.post('https://asia-southeast1-popyut.cloudfunctions.net/clicks', {
+      const res = await axiosInstance.post('https://asia-southeast1-popyut.cloudfunctions.net/clicks', {
         n: count,
       });
 
