@@ -76,8 +76,8 @@
     try {
       const res = await axios.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
 
-      pps = Math.floor((parseInt(res.data.total) - total) / 6);
-      total = parseInt(res.data.total);
+      pps = Math.floor((res.data.total - total) / 6);
+      total = res.data.total;
     } catch (e) {
       console.error(e);
     }
@@ -94,8 +94,8 @@
         n: count,
       });
 
-      pps = Math.floor((parseInt(res.data.total) - total) / 6);
-      total = Math.max(total, parseInt(res.data.total));
+      pps = Math.floor((res.data.total - total) / 6);
+      total = Math.max(total, res.data.total);
 
       lastCount = countUpdate;
     } catch (e) {
