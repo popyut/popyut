@@ -13,14 +13,26 @@
 	let audioIndex = 0;
 	let main: HTMLElement;
 	let bgIndex = 0;
+	let debounceState = false;
 
 	axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
-	function incrementCount() {
+	function incrementCount(debounce: boolean = false) {
+		if (debounce) {
+			if (debounceState) {
+				return;
+			}
+			debounceState = true;
+		}
+
 		count.update((n) => n + 1);
 		playPop();
 		playNaja();
 		changeBg();
+	}
+
+	function unlockDebounce() {
+		debounceState = false;
 	}
 
 	function playPop() {
@@ -66,12 +78,12 @@
 	onMount(fetchLeaderboard);
 </script>
 
-<svelte:body on:keydown={incrementCount} />
+<svelte:body on:keydown={() => incrementCount(true)} on:keyup={() => unlockDebounce()} />
 
 <main
 	bind:this={main}
 	class="w-full h-screen flex flex-col items-center justify-center"
-	on:click={incrementCount}
+	on:click={() => incrementCount(false)}
 	style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
 >
 	<h1 class="text-6xl border-black text-white bg-black rounded p-2">Popyut</h1>
