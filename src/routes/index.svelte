@@ -159,9 +159,9 @@
   <h1 class="noselect text-6xl border-black text-white bg-black rounded p-2 flex items-start">
     POPYUT <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
-  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
+  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count.toLocaleString()}</p>
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
-    Total: {total} <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${pps} PPS` : ''}</span>
+    Total: {total.toLocaleString()} <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${pps} PPS` : ''}</span>
   </p>
 
   <audio bind:this={audio1}>
