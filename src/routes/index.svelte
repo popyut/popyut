@@ -1,4 +1,4 @@
-<script type="ts">
+<script lang="ts">
 	import 'twind/shim';
 
 	import { count } from '../lib/store';
