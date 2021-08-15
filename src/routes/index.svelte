@@ -122,10 +122,10 @@
   <meta name="title" content="POPYUT (Beta)" />
   <meta name="description" content="POPYUT" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta property="og:url" content="https://popyut.vercel.app" />
+  <meta property="og:url" content="https://prayut.click" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="POPYUT" />
-  <meta property="og:description" content="POPYUT" />
+  <meta property="og:description" content="A loud-mouthed popping despot" />
   <meta
     property="og:image"
     content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
