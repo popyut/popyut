@@ -14,6 +14,8 @@
 	let main: HTMLElement;
 	let bgIndex = 0;
 	let debounceState = false;
+	let total = 0;
+	let lastCount;
 
 	axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
@@ -68,12 +70,37 @@
 	}
 
 	async function fetchLeaderboard() {
-		const data = await axios.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
+		try {
+			const res = await axios.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
 
-		console.log({ data });
+			total = res.data.total;
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
+	async function submitCount(count: number) {
+		try {
+			const res = await axios.post('https://asia-southeast1-popyut.cloudfunctions.net/clicks', {
+				data: { n: count }
+			});
+
+			total = res.data.total;
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	lastCount = $count;
+
 	onMount(fetchLeaderboard);
+
+	setInterval(() => {
+		const intervalCount = $count - lastCount;
+		lastCount = $count;
+
+		submitCount(intervalCount);
+	}, 5000);
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
@@ -89,7 +116,8 @@
 	<h1 class="noselect text-6xl border-black text-white bg-black rounded p-2 flex items-start">
 		Popyut <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
 	</h1>
-	<p class="noselect text-4xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
+	<p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count}</p>
+	<p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">Total: {total}</p>
 
 	<audio bind:this={audio1}>
 		<source src="pop1.ogg" type="audio/ogg" />
