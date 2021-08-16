@@ -248,7 +248,7 @@
   </h1>
 
   <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
-    Count: {$count.toLocaleString()}
+    {$count.toLocaleString()}
   </p>
 
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
