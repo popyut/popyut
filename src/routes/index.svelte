@@ -292,7 +292,7 @@
             {#if guild.rate > 0}
               <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span>
             {/if}
-            {guild.total}
+            {guild.total.toLocaleString()}
           </span>
         </div>
       {/each}
@@ -313,7 +313,7 @@
                   <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
                   >
                 {/if}
-                {guild.total}
+                {guild.total.toLocaleString()}
               </span>
             </div>
           {/each}
