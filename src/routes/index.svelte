@@ -148,6 +148,11 @@
   }
 
   async function submitCount(count: number, countUpdate: number) {
+    if (count == 0) {
+      await fetchLeaderboard();
+      return;
+    }
+
     try {
       const t = String(Date.now());
       await axiosInstance.post('https://api.prayut.click/clicks', {
