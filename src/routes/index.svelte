@@ -5,6 +5,7 @@
   import 'twind/shim';
 
   import { count } from '../lib/store';
+  import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
   let audio1: HTMLAudioElement;
@@ -23,6 +24,10 @@
   let lastCount;
   let total: number;
   let pps: number;
+  let guildName: string;
+  let cityGuild;
+  let leaderboardGuilds: Array<any>;
+  let showFullLeaderboard = false;
 
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
@@ -129,9 +134,14 @@
   async function fetchLeaderboard() {
     try {
       const res = await axiosInstance.get('https://api.prayut.click/leaderboard');
-
       pps = res.data.rate;
       total = res.data.total;
+      leaderboardGuilds = res.data.guilds
+        .filter((guild) => guild.total > 0)
+        .sort((a, b) => {
+          if (a.total === b.total) return 0;
+          return a.total > b.total ? -1 : 1;
+        });
     } catch (e) {
       console.error(e);
     }
@@ -145,18 +155,36 @@
 
     try {
       const t = String(Date.now());
-      const res = await axiosInstance.post('https://api.prayut.click/clicks', {
+      await axiosInstance.post('https://api.prayut.click/clicks', {
         n: count,
+        g: cityGuild?.id,
         t,
       });
 
-      pps = res.data.rate;
-      total = Math.max(total, res.data.total);
-
       lastCount = countUpdate;
+
+      await fetchLeaderboard();
     } catch (e) {
       console.error(e);
     }
+  }
+
+  async function fetchGeoData() {
+    const ipRes = await axiosInstance.get('https://api.ipify.org?format=json');
+    const ip = ipRes.data.ip;
+
+    const geoRes = await axiosInstance.get(`https://reallyfreegeoip.org/json/${ip}`);
+    const city = geoRes.data.city;
+    cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
+
+    guildName = cityGuild?.th;
+  }
+
+  function changeGuild(e) {
+    const guildId: string = e.target.value;
+    cityGuild = guilds.find((g) => g.id === +guildId);
+
+    guildName = cityGuild?.th;
   }
 
   lastCount = $count;
@@ -168,6 +196,8 @@
 
     submitCount(intervalCount, $count);
   }, intervalSeconds * 1000);
+
+  fetchGeoData();
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
@@ -216,15 +246,73 @@
     <img src="https://i.imgur.com/a82RgZO.gif" alt="POPYUT" />
     <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
+
   <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
     Count: {$count.toLocaleString()}
   </p>
+
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
     Total: {total !== undefined ? total.toLocaleString() : 'Loading...'}
     <span class="text-xs ml-1 text-green-400"
       >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
     >
   </p>
+
+  {#if guildName !== undefined}
+    <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
+      Guild: {guildName}
+    </p>
+  {/if}
+
+  <select
+    class="mt-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+    on:change={changeGuild}
+  >
+    <option>เลือก Guild ของคุณ</option>
+    {#each guilds as guild}
+      <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
+    {/each}
+  </select>
+
+  {#if leaderboardGuilds !== undefined}
+    <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
+      <h3 class="text-center mb-3 font-medium">Leaderboards</h3>
+      {#each leaderboardGuilds.slice(0, 5) as guild, idx}
+        <div class="flex">
+          <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+          <span>
+            {#if guild.rate > 0}
+              <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span>
+            {/if}
+            {guild.total}
+          </span>
+        </div>
+      {/each}
+      <p class="text-gray-700 text-center w-full mt-2">See more</p>
+    </div>
+
+    <div
+      class={`modal ${showFullLeaderboard && 'open'}`}
+      on:click={() => (showFullLeaderboard = false)}
+    >
+      <div class="modalContent w-80">
+        <div class="modalHeader">Leaderboards</div>
+        <div class="modalBody">
+          {#each leaderboardGuilds as guild, idx}
+            <div class="flex">
+              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+              <span>
+                {#if guild.rate > 0}
+                  <span class="text-green-400 text-sm">{abbreviateNumber(guild.rate)}</span>
+                {/if}
+                {guild.total}
+              </span>
+            </div>
+          {/each}
+        </div>
+      </div>
+    </div>
+  {/if}
 
   <audio bind:this={audio1}>
     <source src="pop1.ogg" type="audio/ogg" />
@@ -291,5 +379,48 @@
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    display: none;
+    transition: all 0.3s ease;
+    /* font-size: 1.5rem; */
+  }
+
+  .modal.open {
+    display: block;
+  }
+
+  .modalContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 30%;
+    min-width: 30%;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  .modalBody {
+    padding: 0.75rem;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
   }
 </style>
