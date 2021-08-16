@@ -20,9 +20,9 @@
   let main: HTMLElement;
   let bgIndex = 0;
   let debounceState = false;
-  let total = 0;
   let lastCount;
-  let pps: number = 0;
+  let total: number;
+  let pps: number;
 
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
@@ -130,7 +130,7 @@
     try {
       const res = await axiosInstance.get('https://api.prayut.click/leaderboard');
 
-      pps = Math.floor((res.data.total - total) / intervalSeconds);
+      pps = res.data.rate;
       total = res.data.total;
     } catch (e) {
       console.error(e);
@@ -150,7 +150,7 @@
         t,
       });
 
-      pps = Math.floor((res.data.total - total) / intervalSeconds);
+      pps = res.data.rate;
       total = Math.max(total, res.data.total);
 
       lastCount = countUpdate;
@@ -220,8 +220,10 @@
     Count: {$count.toLocaleString()}
   </p>
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
-    Total: {total.toLocaleString()}
-    <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${abbreviateNumber(pps)} PPS` : ''}</span>
+    Total: {total !== undefined ? total.toLocaleString() : 'Loading...'}
+    <span class="text-xs ml-1 text-green-400"
+      >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
+    >
   </p>
 
   <audio bind:this={audio1}>
