@@ -1,4 +1,5 @@
 <script lang="ts">
+  export const ssr = false;
   import { onMount } from 'svelte';
   import axios from 'axios';
   import 'twind/shim';
