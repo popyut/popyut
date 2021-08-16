@@ -291,19 +291,19 @@
       <p class="text-gray-700 text-center w-full mt-2">See more</p>
     </div>
 
-    <div
-      class={`modal ${showFullLeaderboard && 'open'}`}
-      on:click={() => (showFullLeaderboard = false)}
-    >
+    <div class={`modal ${showFullLeaderboard && 'open'}`}>
       <div class="modalContent w-80">
-        <div class="modalHeader">Leaderboards</div>
+        <div class="modalHeader" on:click={() => (showFullLeaderboard = false)}>
+          Leaderboards <span class="text-right font-sm text-gray-400">Close</span>
+        </div>
         <div class="modalBody">
           {#each leaderboardGuilds as guild, idx}
             <div class="flex">
               <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
               <span>
                 {#if guild.rate > 0}
-                  <span class="text-green-400 text-sm">{abbreviateNumber(guild.rate)}</span>
+                  <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
+                  >
                 {/if}
                 {guild.total}
               </span>
@@ -419,8 +419,7 @@
 
   .modalBody {
     padding: 0.75rem;
-    /* display: flex; */
-    /* align-items: center; */
-    /* justify-content: center; */
+    max-height: 60vh; /* Change this value according to your needs */
+    overflow: auto;
   }
 </style>
