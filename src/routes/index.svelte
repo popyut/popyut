@@ -22,6 +22,12 @@
 
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
+  const imageUrls = [
+    'https://i.imgur.com/qAT7YUY.jpg',
+    'https://i.imgur.com/5s87Xgb.jpg',
+    'https://i.imgur.com/g3oLmKI.jpg',
+    'https://i.imgur.com/U0r4aAO.jpg',
+  ];
 
   function incrementCount() {
     if (debounceState) {
@@ -71,7 +77,7 @@
   }
 
   function changeBg() {
-    bgIndex = (bgIndex + 1) % 4;
+    bgIndex = (bgIndex + 1) % imageUrls.length;
   }
 
   /**
@@ -102,9 +108,7 @@
 
   async function fetchLeaderboard() {
     try {
-      const res = await axiosInstance.get(
-        'https://api.prayut.click/leaderboard',
-      );
+      const res = await axiosInstance.get('https://api.prayut.click/leaderboard');
 
       pps = Math.floor((res.data.total - total) / intervalSeconds);
       total = res.data.total;
@@ -121,13 +125,10 @@
 
     try {
       const t = String(Date.now());
-      const res = await axiosInstance.post(
-        'https://api.prayut.click/clicks',
-        {
-          n: count,
-          t,
-        },
-      );
+      const res = await axiosInstance.post('https://api.prayut.click/clicks', {
+        n: count,
+        t,
+      });
 
       pps = Math.floor((res.data.total - total) / intervalSeconds);
       total = Math.max(total, res.data.total);
@@ -189,9 +190,11 @@
   class="w-full h-screen flex flex-col items-center justify-center bg-gray-200"
   on:mousedown={incrementCount}
   on:mouseup={unlockDebounce}
+  style={`background-image: url("${imageUrls[bgIndex]}");`}
 >
-  <h1 class="noselect text-6xl border-black text-white bg-black rounded p-2 flex items-start">
-    POPYUT <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
+  <h1 class="noselect text-6xl border-black text-white rounded p-2 flex bg-black items-start">
+    <img src="https://i.imgur.com/a82RgZO.gif" alt="POPYUT" />
+    <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
   <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
     Count: {$count.toLocaleString()}
@@ -200,8 +203,6 @@
     Total: {total.toLocaleString()}
     <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${abbreviateNumber(pps)} PPS` : ''}</span>
   </p>
-
-  <p class="noselect text-2xl text-black">เอารูปลุงออกแปปนึงนะจ๊ะ</p>
 
   <audio bind:this={audio1}>
     <source src="pop1.ogg" type="audio/ogg" />
