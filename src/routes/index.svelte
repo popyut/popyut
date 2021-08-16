@@ -19,6 +19,7 @@
   let lastCount;
   let pps = 0;
 
+  const intervalSeconds = 10
   const axiosInstance = axios.create();
 
   function incrementCount() {
@@ -76,7 +77,7 @@
     try {
       const res = await axiosInstance.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
 
-      pps = Math.floor((res.data.total - total) / 6);
+      pps = Math.floor((res.data.total - total) / intervalSeconds);
       total = res.data.total;
     } catch (e) {
       console.error(e);
@@ -96,7 +97,7 @@
         t,
       });
 
-      pps = Math.floor((res.data.total - total) / 6);
+      pps = Math.floor((res.data.total - total) / intervalSeconds);
       total = Math.max(total, res.data.total);
 
       lastCount = countUpdate;
@@ -113,7 +114,7 @@
     const intervalCount = $count - lastCount;
 
     submitCount(intervalCount, $count);
-  }, 6000);
+  }, intervalSeconds * 1000);
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
