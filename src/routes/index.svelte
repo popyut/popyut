@@ -5,8 +5,10 @@
   import 'twind/shim';
 
   import { count } from '../lib/store';
+  import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
+  console.log({ guilds });
   let audio1: HTMLAudioElement;
   let audio2: HTMLAudioElement;
   let audio3: HTMLAudioElement;
@@ -23,6 +25,7 @@
   let lastCount;
   let total: number;
   let pps: number;
+  let guildName: string;
 
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
@@ -159,6 +162,25 @@
     }
   }
 
+  async function fetchGeoData() {
+    const ipRes = await axiosInstance.get('https://api.ipify.org?format=json');
+    const ip = ipRes.data.ip;
+
+    const geoRes = await axiosInstance.get(`https://reallyfreegeoip.org/json/${ip}`);
+    const city = geoRes.data.city;
+    const cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
+
+    guildName = cityGuild?.th;
+  }
+
+  function changeGuild(e) {
+    const guildId: string = e.target.value;
+    console.log({ guildId });
+    const cityGuild = guilds.find((g) => g.id === +guildId);
+
+    guildName = cityGuild?.th;
+  }
+
   lastCount = $count;
 
   onMount(fetchLeaderboard);
@@ -168,6 +190,8 @@
 
     submitCount(intervalCount, $count);
   }, intervalSeconds * 1000);
+
+  fetchGeoData();
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
@@ -216,15 +240,30 @@
     <img src="https://i.imgur.com/a82RgZO.gif" alt="POPYUT" />
     <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
+
   <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
     Count: {$count.toLocaleString()}
   </p>
+
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
     Total: {total !== undefined ? total.toLocaleString() : 'Loading...'}
     <span class="text-xs ml-1 text-green-400"
       >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
     >
   </p>
+
+  {#if guildName !== undefined}
+    <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
+      Guild: {guildName}
+    </p>
+  {/if}
+
+  <select class="mt-4" on:change={changeGuild}>
+    <option>เลือก Guild ของคุณ</option>
+    {#each guilds as guild}
+      <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
+    {/each}
+  </select>
 
   <audio bind:this={audio1}>
     <source src="pop1.ogg" type="audio/ogg" />

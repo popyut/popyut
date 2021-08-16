@@ -1,5 +1,5 @@
 export const guilds = [
-  { en: 'Bangkok ', th: 'กรุงเทพมหานคร' },
+  { en: 'Bangkok', th: 'กรุงเทพมหานคร' },
   { en: 'Samut Prakan', th: 'สมุทรปราการ' },
   { en: 'Nonthaburi', th: 'นนทบุรี' },
   { en: 'Pathum Thani', th: 'ปทุมธานี' },
