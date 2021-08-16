@@ -206,18 +206,22 @@
 
   <audio bind:this={audio1}>
     <source src="pop1.ogg" type="audio/ogg" />
+    <source src="pop1.mp3" type="audio/mpeg" />
   </audio>
 
   <audio bind:this={audio2}>
     <source src="pop2.ogg" type="audio/ogg" />
+    <source src="pop2.mp3" type="audio/mpeg" />
   </audio>
 
   <audio bind:this={audio3}>
     <source src="pop3.ogg" type="audio/ogg" />
+    <source src="pop3.mp3" type="audio/mpeg" />
   </audio>
 
   <audio bind:this={audio4}>
     <source src="pop4.ogg" type="audio/ogg" />
+    <source src="pop4.mp3" type="audio/mpeg" />
   </audio>
 
   <audio bind:this={naja}>
