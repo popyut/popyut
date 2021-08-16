@@ -242,8 +242,8 @@
   on:mouseup={unlockDebounce}
   style={`background-image: url("${imageUrls[bgIndex]}");`}
 >
-  <h1 class="noselect text-6xl border-black text-white rounded p-2 flex bg-black items-start">
-    <img src="https://i.imgur.com/a82RgZO.gif" alt="POPYUT" />
+  <h1 class="noselect mt-40 text-6xl border-black text-white rounded p-2 flex bg-black items-start">
+    POPYUT
     <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
 
