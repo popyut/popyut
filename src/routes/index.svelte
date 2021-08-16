@@ -186,10 +186,9 @@
 
 <main
   bind:this={main}
-  class="w-full h-screen flex flex-col items-center justify-center"
+  class="w-full h-screen flex flex-col items-center justify-center bg-gray-200"
   on:mousedown={incrementCount}
   on:mouseup={unlockDebounce}
-  style={`background-image: url('images/p${bgIndex + 1}.jpg');"`}
 >
   <h1 class="noselect text-6xl border-black text-white bg-black rounded p-2 flex items-start">
     POPYUT <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
@@ -201,6 +200,8 @@
     Total: {total.toLocaleString()}
     <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${abbreviateNumber(pps)} PPS` : ''}</span>
   </p>
+
+  <p class="noselect text-2xl text-black">เอารูปลุงออกแปปนึงนะจ๊ะ</p>
 
   <audio bind:this={audio1}>
     <source src="pop1.ogg" type="audio/ogg" />
