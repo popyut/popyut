@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
+	import { fade, blur, fly, slide, scale } from 'svelte/transition';
   import axios from 'axios';
   import 'twind/shim';
 
@@ -29,6 +30,8 @@
   let cityGuild;
   let leaderboardGuilds: Array<any>;
   let showFullLeaderboard = false;
+  let playSounds = true;
+  let trueTotal = 0;
 
   const total = tweened(0, {
     duration: 1000,
@@ -51,9 +54,11 @@
     debounceState = true;
 
     count.update((n) => n + 1);
-    total.set($total + 1);
-    playPop();
-    playNaja();
+    total.set(++trueTotal);
+    if (playSounds) {
+      playPop();
+      playNaja();
+    }
     changeBg();
   }
 
@@ -139,11 +144,19 @@
     return newValue;
   }
 
+  function spin(node) {
+		return {
+			duration: 100,
+			css: t => `transform: scale(${1.5 - 0.5 * t}) rotate(${-10 + t * 10}deg);`,
+		};
+	}
+
   async function fetchLeaderboard() {
     try {
       const res = await axiosInstance.get('https://api.prayut.click/leaderboard');
       pps = res.data.rate;
-      total.set(res.data.total);
+      trueTotal = res.data.total;
+      total.set(trueTotal);
       leaderboardGuilds = res.data.guilds
         .filter((guild) => guild.total > 0)
         .sort((a, b) => {
@@ -255,16 +268,20 @@
     <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
 
-  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
-    {$count.toLocaleString()}
-  </p>
+  {#key $count}
+    <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2" in:spin>
+      {$count.toLocaleString()}
+    </p>
+  {/key}
 
-  <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
+  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
     Total: {Math.round($total).toLocaleString()}
     <span class="text-xs ml-1 text-green-400"
       >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
     >
   </p>
+
+  <label class="my-4"><input type="checkbox" bind:checked={playSounds}> Play sounds</label>
 
   {#if guildName !== undefined}
     <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
@@ -302,7 +319,7 @@
     <div class={`modal ${showFullLeaderboard && 'open'}`}>
       <div class="modalContent w-80">
         <div class="modalHeader" on:click={() => (showFullLeaderboard = false)}>
-          Leaderboards <span class="text-right font-sm text-gray-400">Close</span>
+          Leaderboard <span class="text-right font-sm text-gray-400">Close</span>
         </div>
         <div class="modalBody">
           {#each leaderboardGuilds as guild, idx}
