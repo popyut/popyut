@@ -1,6 +1,8 @@
 <script lang="ts">
   export const ssr = false;
   import { onMount } from 'svelte';
+  import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
   import axios from 'axios';
   import 'twind/shim';
 
@@ -22,12 +24,16 @@
   let bgIndex = 0;
   let debounceState = false;
   let lastCount;
-  let total: number;
   let pps: number;
   let guildName: string;
   let cityGuild;
   let leaderboardGuilds: Array<any>;
   let showFullLeaderboard = false;
+
+  const total = tweened(0, {
+    duration: 1000,
+    easing: cubicOut,
+  });
 
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
@@ -45,7 +51,7 @@
     debounceState = true;
 
     count.update((n) => n + 1);
-    total += 1;
+    total.set($total + 1);
     playPop();
     playNaja();
     changeBg();
@@ -135,7 +141,7 @@
     try {
       const res = await axiosInstance.get('https://api.prayut.click/leaderboard');
       pps = res.data.rate;
-      total = res.data.total;
+      total.set(res.data.total);
       leaderboardGuilds = res.data.guilds
         .filter((guild) => guild.total > 0)
         .sort((a, b) => {
@@ -252,7 +258,7 @@
   </p>
 
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
-    Total: {total !== undefined ? total.toLocaleString() : 'Loading...'}
+    Total: {Math.round($total).toLocaleString()}
     <span class="text-xs ml-1 text-green-400"
       >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
     >
@@ -276,7 +282,7 @@
 
   {#if leaderboardGuilds !== undefined}
     <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
-      <h3 class="text-center mb-3 font-medium">Leaderboards</h3>
+      <h3 class="text-center mb-3 font-medium">Leaderboard</h3>
       {#each leaderboardGuilds.slice(0, 5) as guild, idx}
         <div class="flex">
           <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
