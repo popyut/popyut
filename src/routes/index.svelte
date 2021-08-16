@@ -264,7 +264,10 @@
     </p>
   {/if}
 
-  <select class="mt-4" on:change={changeGuild}>
+  <select
+    class="mt-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+    on:change={changeGuild}
+  >
     <option>เลือก Guild ของคุณ</option>
     {#each guilds as guild}
       <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
@@ -285,7 +288,7 @@
           </span>
         </div>
       {/each}
-      <p class="text-gray-700 text-center w-full">See more</p>
+      <p class="text-gray-700 text-center w-full mt-2">See more</p>
     </div>
 
     <div
