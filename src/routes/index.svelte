@@ -8,7 +8,6 @@
   import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
-  console.log({ guilds });
   let audio1: HTMLAudioElement;
   let audio2: HTMLAudioElement;
   let audio3: HTMLAudioElement;
@@ -26,6 +25,9 @@
   let total: number;
   let pps: number;
   let guildName: string;
+  let cityGuild;
+  let leaderboardGuilds: Array<any>;
+  let showFullLeaderboard = false;
 
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
@@ -132,31 +134,31 @@
   async function fetchLeaderboard() {
     try {
       const res = await axiosInstance.get('https://api.prayut.click/leaderboard');
-
       pps = res.data.rate;
       total = res.data.total;
+      leaderboardGuilds = res.data.guilds
+        .filter((guild) => guild.total > 0)
+        .sort((a, b) => {
+          if (a.total === b.total) return 0;
+          return a.total > b.total ? -1 : 1;
+        });
     } catch (e) {
       console.error(e);
     }
   }
 
   async function submitCount(count: number, countUpdate: number) {
-    if (count == 0) {
-      await fetchLeaderboard();
-      return;
-    }
-
     try {
       const t = String(Date.now());
-      const res = await axiosInstance.post('https://api.prayut.click/clicks', {
+      await axiosInstance.post('https://api.prayut.click/clicks', {
         n: count,
+        g: cityGuild?.id,
         t,
       });
 
-      pps = res.data.rate;
-      total = Math.max(total, res.data.total);
-
       lastCount = countUpdate;
+
+      await fetchLeaderboard();
     } catch (e) {
       console.error(e);
     }
@@ -168,15 +170,14 @@
 
     const geoRes = await axiosInstance.get(`https://reallyfreegeoip.org/json/${ip}`);
     const city = geoRes.data.city;
-    const cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
+    cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
 
     guildName = cityGuild?.th;
   }
 
   function changeGuild(e) {
     const guildId: string = e.target.value;
-    console.log({ guildId });
-    const cityGuild = guilds.find((g) => g.id === +guildId);
+    cityGuild = guilds.find((g) => g.id === +guildId);
 
     guildName = cityGuild?.th;
   }
@@ -265,6 +266,46 @@
     {/each}
   </select>
 
+  {#if leaderboardGuilds !== undefined}
+    <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
+      <h3 class="text-center mb-3 font-medium">Leaderboards</h3>
+      {#each leaderboardGuilds.slice(0, 5) as guild, idx}
+        <div class="flex">
+          <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+          <span>
+            {#if guild.rate > 0}
+              <span class="text-green-400 text-sm">{abbreviateNumber(guild.rate)}</span>
+            {/if}
+            {guild.total}
+          </span>
+        </div>
+      {/each}
+      <p class="text-gray-700 text-center w-full">See more</p>
+    </div>
+
+    <div
+      class={`modal ${showFullLeaderboard && 'open'}`}
+      on:click={() => (showFullLeaderboard = false)}
+    >
+      <div class="modalContent w-80">
+        <div class="modalHeader">Leaderboards</div>
+        <div class="modalBody">
+          {#each leaderboardGuilds as guild, idx}
+            <div class="flex">
+              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+              <span>
+                {#if guild.rate > 0}
+                  <span class="text-green-400 text-sm">{abbreviateNumber(guild.rate)}</span>
+                {/if}
+                {guild.total}
+              </span>
+            </div>
+          {/each}
+        </div>
+      </div>
+    </div>
+  {/if}
+
   <audio bind:this={audio1}>
     <source src="pop1.ogg" type="audio/ogg" />
     <source src="pop1.mp3" type="audio/mpeg" />
@@ -330,5 +371,48 @@
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    display: none;
+    transition: all 0.3s ease;
+    /* font-size: 1.5rem; */
+  }
+
+  .modal.open {
+    display: block;
+  }
+
+  .modalContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 30%;
+    min-width: 30%;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  .modalBody {
+    padding: 0.75rem;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
   }
 </style>
