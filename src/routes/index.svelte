@@ -100,9 +100,11 @@
         case 2:
           notMySenpai.currentTime = 0;
           notMySenpai.play();
+          break;
         case 3:
           thaiwin.currentTime = 0;
           thaiwin.play();
+          break;
       }
     }
   }
