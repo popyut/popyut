@@ -103,7 +103,7 @@
   async function fetchLeaderboard() {
     try {
       const res = await axiosInstance.get(
-        'https://asia-southeast1-popyut.cloudfunctions.net/leaderboard',
+        'https://api.prayut.click/leaderboard',
       );
 
       pps = Math.floor((res.data.total - total) / intervalSeconds);
@@ -122,7 +122,7 @@
     try {
       const t = String(Date.now());
       const res = await axiosInstance.post(
-        'https://asia-southeast1-popyut.cloudfunctions.net/clicks',
+        'https://api.prayut.click/clicks',
         {
           n: count,
           t,
