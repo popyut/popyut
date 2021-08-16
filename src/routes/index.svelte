@@ -17,9 +17,9 @@
   let debounceState = false;
   let total = 0;
   let lastCount;
-  let pps = 0;
+  let pps: number = 0;
 
-  const intervalSeconds = 10
+  const intervalSeconds = 10;
   const axiosInstance = axios.create();
 
   function incrementCount() {
@@ -73,9 +73,37 @@
     bgIndex = (bgIndex + 1) % 4;
   }
 
+  /**
+   * Code From
+   * https://stackoverflow.com/questions/10599933/convert-long-number-into-abbreviated-string-in-javascript-with-a-special-shortn
+   */
+  function abbreviateNumber(value: number) {
+    let newValue: any = value;
+    if (value >= 1000) {
+      var suffixes = ['', 'k', 'm', 'b', 't'];
+      var suffixNum = Math.floor(('' + value).length / 3);
+      var shortValue: any = '';
+      for (var precision = 2; precision >= 1; precision--) {
+        shortValue = parseFloat(
+          (suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(precision),
+        );
+        var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
+        if (dotLessShortValue.length <= 2) {
+          break;
+        }
+      }
+      if (shortValue % 1 != 0) shortValue = shortValue.toFixed(1);
+      newValue = shortValue + suffixes[suffixNum];
+    }
+
+    return newValue;
+  }
+
   async function fetchLeaderboard() {
     try {
-      const res = await axiosInstance.get('https://asia-southeast1-popyut.cloudfunctions.net/leaderboard');
+      const res = await axiosInstance.get(
+        'https://asia-southeast1-popyut.cloudfunctions.net/leaderboard',
+      );
 
       pps = Math.floor((res.data.total - total) / intervalSeconds);
       total = res.data.total;
@@ -92,10 +120,13 @@
 
     try {
       const t = String(Date.now());
-      const res = await axiosInstance.post('https://asia-southeast1-popyut.cloudfunctions.net/clicks', {
-        n: count,
-        t,
-      });
+      const res = await axiosInstance.post(
+        'https://asia-southeast1-popyut.cloudfunctions.net/clicks',
+        {
+          n: count,
+          t,
+        },
+      );
 
       pps = Math.floor((res.data.total - total) / intervalSeconds);
       total = Math.max(total, res.data.total);
@@ -162,9 +193,12 @@
   <h1 class="noselect text-6xl border-black text-white bg-black rounded p-2 flex items-start">
     POPYUT <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
   </h1>
-  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">Count: {$count.toLocaleString()}</p>
+  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
+    Count: {$count.toLocaleString()}
+  </p>
   <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2">
-    Total: {total.toLocaleString()} <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${pps} PPS` : ''}</span>
+    Total: {total.toLocaleString()}
+    <span class="text-xs ml-1 text-green-400">{pps > 0 ? `${abbreviateNumber(pps)} PPS` : ''}</span>
   </p>
 
   <audio bind:this={audio1}>
