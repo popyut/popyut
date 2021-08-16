@@ -12,6 +12,10 @@
   let audio3: HTMLAudioElement;
   let audio4: HTMLAudioElement;
   let naja: HTMLAudioElement;
+  let najaaaaa: HTMLAudioElement;
+  let notMySenpai: HTMLAudioElement;
+  let thaiwin: HTMLAudioElement;
+  let najaCount = 100;
   let audioIndex = 0;
   let main: HTMLElement;
   let bgIndex = 0;
@@ -70,9 +74,25 @@
   }
 
   function playNaja() {
-    if ($count % 100 === 0) {
-      naja.currentTime = 0;
-      naja.play();
+    if ($count % najaCount === 0) {
+      const rand = ~~(Math.random() * 3);
+
+      switch (rand) {
+        case 0:
+          naja.currentTime = 0;
+          naja.play();
+          break;
+        case 1:
+          najaaaaa.currentTime = 0;
+          najaaaaa.play();
+          break;
+        case 2:
+          notMySenpai.currentTime = 0;
+          notMySenpai.play();
+        case 3:
+          thaiwin.currentTime = 0;
+          thaiwin.play();
+      }
     }
   }
 
@@ -225,7 +245,19 @@
   </audio>
 
   <audio bind:this={naja}>
-    <source src="naja.mp3" type="audio/mpeg" />
+    <source src="audio/naja.mp3" type="audio/mpeg" />
+  </audio>
+
+  <audio bind:this={najaaaaa}>
+    <source src="audio/najaaaaa.mp3" type="audio/mpeg" />
+  </audio>
+
+  <audio bind:this={notMySenpai}>
+    <source src="audio/not-my-senpai.mp3" type="audio/mpeg" />
+  </audio>
+
+  <audio bind:this={thaiwin}>
+    <source src="audio/thaiwin.mp3" type="audio/mpeg" />
   </audio>
 
   <Kofi name="narze" />
