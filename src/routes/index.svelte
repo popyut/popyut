@@ -1,12 +1,14 @@
 <script lang="ts">
   export const ssr = false;
   import { onMount } from 'svelte';
+  import { browser } from '$app/env';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import { fade, blur, fly, slide, scale } from 'svelte/transition';
   import axios from 'axios';
   import 'twind/shim';
-  import { Howl, Howler } from 'howler';
+  import { Howl } from 'howler';
+  import { goto } from '$app/navigation';
 
   import { count } from '../lib/store';
   import { guilds } from '../lib/guilds';
@@ -31,7 +33,6 @@
   let main: HTMLElement;
   let bgIndex = 0;
   let debounceState = false;
-  let lastCount;
   let pps: number;
   let guildName: string;
   let cityGuild;
@@ -39,6 +40,8 @@
   let showFullLeaderboard = false;
   let playSounds = true;
   let trueTotal = 0;
+
+  let lastCount = $count;
 
   const total = tweened(0, {
     duration: 1000,
@@ -171,6 +174,10 @@
     cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
 
     guildName = cityGuild?.th;
+
+    if (browser) {
+      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
+    }
   }
 
   function changeGuild(e) {
@@ -178,19 +185,45 @@
     cityGuild = guilds.find((g) => g.id === +guildId);
 
     guildName = cityGuild?.th;
+
+    if (browser) {
+      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
+    }
   }
 
-  lastCount = $count;
+  function setSubmitCountInterval() {
+    setInterval(() => {
+      const intervalCount = $count - lastCount;
+
+      submitCount(intervalCount, $count);
+    }, intervalSeconds * 1000);
+  }
+
+  function setGuildFromQueryString() {
+    if (browser) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const guildParam = searchParams.get('g');
+
+      if (guildParam) {
+        cityGuild = guilds.find((g) => provinceGuildSlug(g.en) === guildParam);
+
+        guildName = cityGuild?.th;
+      } else {
+        fetchGeoData();
+      }
+    }
+  }
+
+  function provinceGuildSlug(name: string) {
+    const provinceName = name.toLowerCase().split(' ').join('');
+    const provinceNameWithSuffix = provinceName.replace(/[aeiou]$/, '') + 'ian';
+    return provinceNameWithSuffix;
+  }
+
+  setGuildFromQueryString();
+  setSubmitCountInterval();
 
   onMount(fetchLeaderboard);
-
-  setInterval(() => {
-    const intervalCount = $count - lastCount;
-
-    submitCount(intervalCount, $count);
-  }, intervalSeconds * 1000);
-
-  fetchGeoData();
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
