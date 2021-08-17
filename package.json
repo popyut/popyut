@@ -29,6 +29,7 @@
   "type": "module",
   "dependencies": {
     "axios": "^0.21.1",
+    "howler": "^2.2.3",
     "twind": "^0.16.16"
   }
 }

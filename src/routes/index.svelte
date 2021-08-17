@@ -2,19 +2,23 @@
   export const ssr = false;
   import { onMount } from 'svelte';
   import { tweened } from 'svelte/motion';
-	import { cubicOut } from 'svelte/easing';
-	import { fade, blur, fly, slide, scale } from 'svelte/transition';
+  import { cubicOut } from 'svelte/easing';
+  import { fade, blur, fly, slide, scale } from 'svelte/transition';
   import axios from 'axios';
   import 'twind/shim';
+  import { Howl, Howler } from 'howler';
 
   import { count } from '../lib/store';
   import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
-  let audio1: HTMLAudioElement;
-  let audio2: HTMLAudioElement;
-  let audio3: HTMLAudioElement;
-  let audio4: HTMLAudioElement;
+  let pops = [
+    new Howl({ src: ['audio/pop1.ogg', 'audio/pop1.mp3'] }),
+    new Howl({ src: ['audio/pop2.ogg', 'audio/pop2.mp3'] }),
+    new Howl({ src: ['audio/pop3.ogg', 'audio/pop3.mp3'] }),
+    new Howl({ src: ['audio/pop4.ogg', 'audio/pop4.mp3'] }),
+  ];
+
   let naja: HTMLAudioElement;
   let najaaaaa: HTMLAudioElement;
   let notMySenpai: HTMLAudioElement;
@@ -67,25 +71,7 @@
   }
 
   function playPop() {
-    switch (audioIndex) {
-      case 0:
-        audio1.currentTime = 0;
-        audio1.play();
-        break;
-      case 1:
-        audio2.currentTime = 0;
-        audio2.play();
-        break;
-      case 2:
-        audio3.currentTime = 0;
-        audio3.play();
-        break;
-      case 3:
-        audio4.currentTime = 0;
-        audio4.play();
-        break;
-    }
-
+    pops[audioIndex].play();
     audioIndex = (audioIndex + 1) % 4;
   }
 
@@ -145,11 +131,11 @@
   }
 
   function spin(node) {
-		return {
-			duration: 100,
-			css: t => `transform: scale(${1.5 - 0.5 * t}) rotate(${-10 + t * 10}deg);`,
-		};
-	}
+    return {
+      duration: 100,
+      css: (t) => `transform: scale(${1.5 - 0.5 * t}) rotate(${-10 + t * 10}deg);`,
+    };
+  }
 
   async function fetchLeaderboard() {
     try {
@@ -281,7 +267,7 @@
     >
   </p>
 
-  <label class="my-4"><input type="checkbox" bind:checked={playSounds}> Play sounds</label>
+  <label class="my-4"><input type="checkbox" bind:checked={playSounds} /> Play sounds</label>
 
   {#if guildName !== undefined}
     <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
@@ -338,26 +324,6 @@
       </div>
     </div>
   {/if}
-
-  <audio bind:this={audio1}>
-    <source src="pop1.ogg" type="audio/ogg" />
-    <source src="pop1.mp3" type="audio/mpeg" />
-  </audio>
-
-  <audio bind:this={audio2}>
-    <source src="pop2.ogg" type="audio/ogg" />
-    <source src="pop2.mp3" type="audio/mpeg" />
-  </audio>
-
-  <audio bind:this={audio3}>
-    <source src="pop3.ogg" type="audio/ogg" />
-    <source src="pop3.mp3" type="audio/mpeg" />
-  </audio>
-
-  <audio bind:this={audio4}>
-    <source src="pop4.ogg" type="audio/ogg" />
-    <source src="pop4.mp3" type="audio/mpeg" />
-  </audio>
 
   <audio bind:this={naja}>
     <source src="audio/naja.mp3" type="audio/mpeg" />
