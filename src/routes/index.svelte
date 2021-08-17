@@ -200,7 +200,18 @@
     submitCount(intervalCount, $count);
   }, intervalSeconds * 1000);
 
-  fetchGeoData();
+  if (browser) {
+    const searchParams = new URLSearchParams(window.location.search);
+    const guildParam = searchParams.get('g');
+
+    if (guildParam) {
+      cityGuild = guilds.find((g) => g.en.toLowerCase() === guildParam);
+
+      guildName = cityGuild?.th;
+    } else {
+      fetchGeoData();
+    }
+  }
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
