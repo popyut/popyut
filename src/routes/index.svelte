@@ -309,6 +309,7 @@
       <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
     {/each}
   </select>
+  <div style="min-height: 25vh"></div>
 
   {#if leaderboardGuilds !== undefined}
     <!-- <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
@@ -330,7 +331,21 @@
     <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
       <div class="modalContent w-80">
         <div class="modalHeader" on:click={() => (showFullLeaderboard = !showFullLeaderboard)}>
-          Leaderboard <span class="text-right font-sm text-gray-400">{#if showFullLeaderboard}close{:else}open{/if}</span>
+          <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
+            <span class="font-medium">Leaderboard</span>
+            {#if showFullLeaderboard}
+              <span class="text-right font-sm text-gray-400">close</span>
+            {:else}
+              <span class="text-right font-sm text-gray-400">open</span>
+            {/if}
+          </div>
+          {#if !showFullLeaderboard}
+          <div class="flex justify-between items-center pt-2">
+            {#each leaderboardGuilds.slice(0, 3) as guild, idx}
+              <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
+            {/each}
+          </div>
+          {/if}
         </div>
         <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
           {#each leaderboardGuilds as guild, idx}
@@ -400,23 +415,24 @@
     /* left: 50%; */
     /* transform: translate(-50%, -50%); */
     /* min-height: 30%; */
-    min-width: 30%;
+    min-width: 50%;
     background-color: white;
     border-radius: 10px 10px 0 0;
   }
 
   .modalHeader {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; */
     padding: 0.75rem;
     border-bottom: 1px solid #eaeaea;
+    white-space: nowrap;
+    overflow-y: hidden;
   }
 
   .modalBody {
     max-height: .001vh;
     transition: max-height 0.4s;
-    overflow: hidden;
   }
 
   .modalBody.open {
