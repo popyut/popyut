@@ -233,7 +233,10 @@
 
   <meta name="title" content="POPYUT (Beta)" />
   <meta name="description" content="POPYUT" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
   <meta property="og:url" content="https://prayut.click" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="POPYUT" />
