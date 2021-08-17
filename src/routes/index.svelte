@@ -314,9 +314,10 @@
   <Kofi name="narze" />
 
   <div
-    class="text-xs sm:text-base md:fixed bottom-16 sm:bottom-2 text-right mr-4 w-screen z-10 mb-20 md:mb-0"
+    class="text-xs fixed sm:text-base bottom-4 right-4 p-1 text-right z-10 mb-0 bg-white rounded"
   >
     <div>
+      <a href="https://twitter.com/PrayutClick" target="_blank" rel="noreferrer">@PrayutClick</a> |
       <a href="https://github.com/narze/popyut" target="_blank" rel="noreferrer">Github</a>
       <!-- | <a href="https://thailand-grand-opening.web.app" target="_blank" rel="noreferrer"
         >120วันเปิดประเทศ?</a
