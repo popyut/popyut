@@ -1,12 +1,14 @@
 <script lang="ts">
   export const ssr = false;
   import { onMount } from 'svelte';
+  import { browser } from '$app/env';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import { fade, blur, fly, slide, scale } from 'svelte/transition';
   import axios from 'axios';
   import 'twind/shim';
-  import { Howl, Howler } from 'howler';
+  import { Howl } from 'howler';
+  import { goto } from '$app/navigation';
 
   import { count } from '../lib/store';
   import { guilds } from '../lib/guilds';
@@ -171,6 +173,10 @@
     cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
 
     guildName = cityGuild?.th;
+
+    if (browser) {
+      goto(`?g=${cityGuild.en.toLowerCase().split(' ').join('')}`, { replaceState: true });
+    }
   }
 
   function changeGuild(e) {
@@ -178,6 +184,10 @@
     cityGuild = guilds.find((g) => g.id === +guildId);
 
     guildName = cityGuild?.th;
+
+    if (browser) {
+      goto(`?g=${cityGuild.en.toLowerCase().split(' ').join('')}`, { replaceState: true });
+    }
   }
 
   lastCount = $count;
