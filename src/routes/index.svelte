@@ -176,7 +176,7 @@
     guildName = cityGuild?.th;
 
     if (browser) {
-      goto(`?g=${cityGuild.en.toLowerCase().split(' ').join('')}`, { replaceState: true });
+      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
     }
   }
 
@@ -187,7 +187,7 @@
     guildName = cityGuild?.th;
 
     if (browser) {
-      goto(`?g=${cityGuild.en.toLowerCase().split(' ').join('')}`, { replaceState: true });
+      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
     }
   }
 
@@ -205,13 +205,19 @@
       const guildParam = searchParams.get('g');
 
       if (guildParam) {
-        cityGuild = guilds.find((g) => g.en.toLowerCase().split(' ').join('') === guildParam);
+        cityGuild = guilds.find((g) => provinceGuildSlug(g.en) === guildParam);
 
         guildName = cityGuild?.th;
       } else {
         fetchGeoData();
       }
     }
+  }
+
+  function provinceGuildSlug(name: string) {
+    const provinceName = name.toLowerCase().split(' ').join('');
+    const provinceNameWithSuffix = provinceName.replace(/[aeiou]$/, '') + 'ian';
+    return provinceNameWithSuffix;
   }
 
   setGuildFromQueryString();
