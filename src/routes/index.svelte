@@ -119,10 +119,10 @@
     return newValue;
   }
 
-  function spin(node) {
+  function spin(node: HTMLParagraphElement, t: {}) {
     return {
       duration: 100,
-      css: (t) => `transform: scale(${1.5 - 0.5 * t}) rotate(${-10 + t * 10}deg);`,
+      css: (t: number) => `transform: scale(${1.5 - 0.5 * t}) rotate(${-10 + t * 10}deg);`,
     };
   }
 
