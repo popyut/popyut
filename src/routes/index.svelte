@@ -205,7 +205,7 @@
       const guildParam = searchParams.get('g');
 
       if (guildParam) {
-        cityGuild = guilds.find((g) => g.en.toLowerCase() === guildParam);
+        cityGuild = guilds.find((g) => g.en.toLowerCase().split(' ').join('') === guildParam);
 
         guildName = cityGuild?.th;
       } else {
