@@ -230,11 +230,17 @@
 
 <main
   bind:this={main}
-  class="w-full h-screen flex flex-col items-center justify-center bg-gray-200"
+  class="w-full h-screen flex flex-col items-center justify-center bg-transparent"
   on:mousedown={incrementCount}
   on:mouseup={unlockDebounce}
-  style={`background-image: url("${imageUrls[bgIndex]}");`}
 >
+  {#each imageUrls as url, idx}
+    <img
+      src={url}
+      alt="Popyut"
+      class={`${idx === bgIndex ? 'block' : 'hidden'} fixed object-cover w-full h-full -z-10`}
+    />
+  {/each}
   <h1 class="noselect mt-40 text-6xl border-black text-white rounded p-2 flex bg-black items-start">
     POPYUT
     <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
@@ -329,12 +335,6 @@
 </main>
 
 <style>
-  main {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
-
   * {
     user-select: none; /* supported by Chrome and Opera */
     -webkit-user-select: none; /* Safari */
