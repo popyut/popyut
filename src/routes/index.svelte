@@ -12,17 +12,20 @@
   import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
-  let pops = [
+  const pops = [
     new Howl({ src: ['audio/pop1.ogg', 'audio/pop1.mp3'] }),
     new Howl({ src: ['audio/pop2.ogg', 'audio/pop2.mp3'] }),
     new Howl({ src: ['audio/pop3.ogg', 'audio/pop3.mp3'] }),
     new Howl({ src: ['audio/pop4.ogg', 'audio/pop4.mp3'] }),
   ];
 
-  let naja: HTMLAudioElement;
-  let najaaaaa: HTMLAudioElement;
-  let notMySenpai: HTMLAudioElement;
-  let thaiwin: HTMLAudioElement;
+  const comboSounds = [
+    new Howl({ src: ['audio/naja.mp3'] }),
+    new Howl({ src: ['audio/najaaaaa.mp3'] }),
+    new Howl({ src: ['audio/thaiwin.mp3'] }),
+    new Howl({ src: ['audio/not-my-senpai.mp3'] }),
+  ];
+
   let najaCount = 100;
   let audioIndex = 0;
   let main: HTMLElement;
@@ -77,26 +80,9 @@
 
   function playNaja() {
     if ($count % najaCount === 0) {
-      const rand = ~~(Math.random() * 3);
+      const randIndex = ~~(Math.random() * comboSounds.length);
 
-      switch (rand) {
-        case 0:
-          naja.currentTime = 0;
-          naja.play();
-          break;
-        case 1:
-          najaaaaa.currentTime = 0;
-          najaaaaa.play();
-          break;
-        case 2:
-          notMySenpai.currentTime = 0;
-          notMySenpai.play();
-          break;
-        case 3:
-          thaiwin.currentTime = 0;
-          thaiwin.play();
-          break;
-      }
+      comboSounds[randIndex].play();
     }
   }
 
@@ -324,22 +310,6 @@
       </div>
     </div>
   {/if}
-
-  <audio bind:this={naja}>
-    <source src="audio/naja.mp3" type="audio/mpeg" />
-  </audio>
-
-  <audio bind:this={najaaaaa}>
-    <source src="audio/najaaaaa.mp3" type="audio/mpeg" />
-  </audio>
-
-  <audio bind:this={notMySenpai}>
-    <source src="audio/not-my-senpai.mp3" type="audio/mpeg" />
-  </audio>
-
-  <audio bind:this={thaiwin}>
-    <source src="audio/thaiwin.mp3" type="audio/mpeg" />
-  </audio>
 
   <Kofi name="narze" />
 
