@@ -33,7 +33,6 @@
   let main: HTMLElement;
   let bgIndex = 0;
   let debounceState = false;
-  let lastCount;
   let pps: number;
   let guildName: string;
   let cityGuild;
@@ -41,6 +40,8 @@
   let showFullLeaderboard = false;
   let playSounds = true;
   let trueTotal = 0;
+
+  let lastCount = $count;
 
   const total = tweened(0, {
     duration: 1000,
@@ -190,28 +191,33 @@
     }
   }
 
-  lastCount = $count;
+  function setSubmitCountInterval() {
+    setInterval(() => {
+      const intervalCount = $count - lastCount;
 
-  onMount(fetchLeaderboard);
+      submitCount(intervalCount, $count);
+    }, intervalSeconds * 1000);
+  }
 
-  setInterval(() => {
-    const intervalCount = $count - lastCount;
+  function setGuildFromQueryString() {
+    if (browser) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const guildParam = searchParams.get('g');
 
-    submitCount(intervalCount, $count);
-  }, intervalSeconds * 1000);
+      if (guildParam) {
+        cityGuild = guilds.find((g) => g.en.toLowerCase() === guildParam);
 
-  if (browser) {
-    const searchParams = new URLSearchParams(window.location.search);
-    const guildParam = searchParams.get('g');
-
-    if (guildParam) {
-      cityGuild = guilds.find((g) => g.en.toLowerCase() === guildParam);
-
-      guildName = cityGuild?.th;
-    } else {
-      fetchGeoData();
+        guildName = cityGuild?.th;
+      } else {
+        fetchGeoData();
+      }
     }
   }
+
+  setGuildFromQueryString();
+  setSubmitCountInterval();
+
+  onMount(fetchLeaderboard);
 </script>
 
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
