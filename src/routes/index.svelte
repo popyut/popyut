@@ -404,6 +404,7 @@
     position: absolute;
     bottom: 0;
     min-width: 50%;
+    width: fit-content;
     background-color: white;
     transition: max-height 0.4s;
     border-radius: 10px 10px 0 0;
@@ -432,26 +433,36 @@
     padding: 0.75rem;
     transition: max-height 0.4s;
   }
+
+  #top-three {
+    gap: 0.75rem;
+  }
+
   @media only screen and (max-width: 1000px) {
     #top-3 {
       display: none;
     }
   }
+
   @media only screen and (max-width: 700px) {
     .modalContent {
       max-height: 8.65rem;
     }
+
     .modalHeader {
       padding-bottom: 4rem;
     }
+
     .modalHeader.open {
       padding-bottom: 0.75rem;
     }
   }
+
   @media only screen and (max-width: 680px) {
     #top-2 {
       display: none;
     }
+
     #top-three {
       justify-content: center;
     }
