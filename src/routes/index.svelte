@@ -40,6 +40,7 @@
   let showFullLeaderboard = false;
   let showBodyLeader = false;
   let trueTotal = 0;
+  let touchEvents = false;
 
   let lastCount = $count;
 
@@ -66,6 +67,17 @@
     playPop();
     playNaja();
     bgIndex = 1;
+  }
+
+  function touchStart() {
+    touchEvents = true;
+    incrementCount();
+  }
+
+  function mouseDown() {
+    if (!touchEvents) {
+      incrementCount();
+    }
   }
 
   function unlockDebounce() {
@@ -273,8 +285,8 @@
 <main
   bind:this={main}
   class="w-full h-screen flex flex-col items-center justify-center bg-transparent"
-  on:touchstart={incrementCount}
-  on:mousedown={incrementCount}
+  on:touchstart={touchStart}
+  on:mousedown={mouseDown}
   on:touchend={unlockDebounce}
   on:touchcancel={unlockDebounce}
   on:mouseup={unlockDebounce}
