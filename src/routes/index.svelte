@@ -450,7 +450,7 @@
   .modalBody {
     max-height: .001vh;
     transition: max-height 0.4s;
-    overflow: hidden;
+    overflow: auto;
   }
 
   .modalBody.open {
