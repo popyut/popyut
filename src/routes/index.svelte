@@ -103,7 +103,7 @@
   function abbreviateNumber(value: number) {
     let newValue: any = value;
     if (value >= 1000) {
-      var suffixes = ['', 'k', 'm', 'b', 't'];
+      var suffixes = ['', 'K', 'M', 'B', 'T'];
       var suffixNum = Math.floor(('' + value).length / 3);
       var shortValue: any = '';
       for (var precision = 2; precision >= 1; precision--) {
