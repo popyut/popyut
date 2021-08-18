@@ -317,7 +317,7 @@
 
   {#if leaderboardGuilds !== undefined}
     <div class="modalContent w-80 {showFullLeaderboard && 'open'}">
-      <div class="modalHeader" on:click={showHideLeaderboard}>
+      <div class="modalHeader {showFullLeaderboard && 'open'}" on:click={showHideLeaderboard}>
         <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
           <span class="">
             Leaderboard
