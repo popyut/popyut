@@ -343,7 +343,7 @@
     <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
       <div class="modalContent w-80">
         <div class="modalHeader" on:click={showHideLeaderboard}>
-          <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
+          <div class="title flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
             <span class="font-medium">Leaderboard</span>
             <span class="text-right font-sm text-gray-400">
               {#if showFullLeaderboard}
@@ -354,7 +354,7 @@
             </span>
           </div>
           {#if !showFullLeaderboard}
-          <div class="flex justify-between items-center pt-2">
+          <div class="top-three flex justify-between items-center pt-2">
             {#each leaderboardGuilds.slice(0, 3) as guild, idx}
               <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
             {/each}
@@ -432,6 +432,7 @@
     /* transform: translate(-50%, -50%); */
     /* min-height: 30%; */
     min-width: 50%;
+    width: fit-content;
     background-color: white;
     border-radius: 10px 10px 0 0;
   }
@@ -445,6 +446,10 @@
     white-space: nowrap;
     overflow-y: hidden;
     cursor: pointer;
+  }
+
+  .modalHeader .top-three {
+    gap: 0.75rem;
   }
 
   .modalBody {
