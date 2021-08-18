@@ -296,7 +296,7 @@
 
   {#key $count}
     <h1 id="localCounter" class="noselect text-7xl text-white mt-4 rounded p-2 items-start" in:spin>
-      {$count % 100 ? $count.toLocaleString() : "POPYUT"}
+      {$count % 100 ? $count.toLocaleString() : "POPYUT"}<br>{bgIndex}
     </h1>
   {/key}
 
