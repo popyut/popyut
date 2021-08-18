@@ -39,13 +39,12 @@
   let leaderboardGuilds: Array<any>;
   let showFullLeaderboard = false;
   let showBodyLeader = false;
-  let playSounds = true;
   let trueTotal = 0;
 
   let lastCount = $count;
 
   const total = tweened(0, {
-    duration: 1000,
+    duration: 3000,
     easing: cubicOut,
   });
 
@@ -64,10 +63,8 @@
 
     count.update((n) => n + 1);
     total.set(++trueTotal);
-    if (playSounds) {
-      playPop();
-      playNaja();
-    }
+    playPop();
+    playNaja();
     bgIndex = 1;
   }
 
@@ -236,10 +233,10 @@
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
 
 <svelte:head>
-  <title>POPYUT (Beta)</title>
+  <title>POPYUT</title>
 
-  <meta name="title" content="POPYUT (Beta)" />
-  <meta name="description" content="POPYUT" />
+  <meta name="title" content="POPYUT" />
+  <meta name="description" content="A loud-mouthed popping dictator" />
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -247,7 +244,7 @@
   <meta property="og:url" content="https://prayut.click" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="POPYUT" />
-  <meta property="og:description" content="A loud-mouthed popping despot" />
+  <meta property="og:description" content="A loud-mouthed popping dictator" />
   <meta
     property="og:image"
     content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
@@ -287,29 +284,8 @@
     />
   {/each}
 
-  {#key $count}
-    <h1 id="localCounter" class="noselect text-6xl text-white mt-6 rounded p-2 items-start" in:spin>
-      {$count % 100 ? $count.toLocaleString() : "POPYUT"}
-    </h1>
-  {/key}
-
-  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
-    Total: {Math.round($total).toLocaleString()}
-    <span class="text-xs ml-1 text-green-400"
-      >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
-    >
-  </p>
-
-  <label class="my-4"><input type="checkbox" bind:checked={playSounds} /> Play sounds</label>
-
-  {#if guildName !== undefined}
-    <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
-      Guild: {guildName}
-    </p>
-  {/if}
-
   <select
-    class="mt-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+    class="justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
     on:change={changeGuild}
   >
     <option>เลือก Guild ของคุณ</option>
@@ -317,63 +293,53 @@
       <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
     {/each}
   </select>
-  <div style="min-height: 25vh"></div>
+
+  {#key $count}
+    <h1 id="localCounter" class="noselect text-7xl text-white mt-4 rounded p-2 items-start" in:spin>
+      {$count % 100 ? $count.toLocaleString() : "POPYUT"}
+    </h1>
+  {/key}
+
+  <div style="min-height: 70vh"></div>
 
   {#if leaderboardGuilds !== undefined}
-    <!-- <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
-      <h3 class="text-center mb-3 font-medium">Leaderboard</h3>
-      {#each leaderboardGuilds.slice(0, 5) as guild, idx}
-        <div class="flex">
-          <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
-          <span>
-            {#if guild.rate > 0}
-              <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span>
-            {/if}
-            {guild.total.toLocaleString()}
+    <div class="modalContent w-80">
+      <div class="modalHeader" on:click={showHideLeaderboard}>
+        <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
+          <span class="">
+            Leaderboard
+          </span>
+          <span class="text-right">
+            <span class="text-xs mr-2 text-green-400"
+              >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
+            >
+            {Math.round($total).toLocaleString()}
           </span>
         </div>
-      {/each}
-      <p class="text-gray-700 text-center w-full mt-2">See more</p>
-    </div> -->
-
-    <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
-      <div class="modalContent w-80">
-        <div class="modalHeader" on:click={showHideLeaderboard}>
-          <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
-            <span class="font-medium">Leaderboard</span>
-            <span class="text-right font-sm text-gray-400">
-              {#if showFullLeaderboard}
-                close
-              {:else}
-                open
+        {#if !showFullLeaderboard}
+        <div class="flex justify-between items-center pt-2">
+          {#each leaderboardGuilds.slice(0, 3) as guild, idx}
+            <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
+          {/each}
+        </div>
+        {/if}
+      </div>
+      <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
+        {#if showBodyLeader}
+        {#each leaderboardGuilds as guild, idx}
+          <div class="flex">
+            <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+            <span>
+              {#if guild.rate > 0}
+                <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
+                >
               {/if}
+              {guild.total.toLocaleString()}
             </span>
           </div>
-          {#if !showFullLeaderboard}
-          <div class="flex justify-between items-center pt-2">
-            {#each leaderboardGuilds.slice(0, 3) as guild, idx}
-              <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
-            {/each}
-          </div>
-          {/if}
-        </div>
-        <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
-          {#if showBodyLeader}
-          {#each leaderboardGuilds as guild, idx}
-            <div class="flex">
-              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
-              <span>
-                {#if guild.rate > 0}
-                  <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
-                  >
-                {/if}
-                {guild.total.toLocaleString()}
-              </span>
-            </div>
-          {/each}
-          {/if}
-        </div>
-      <!-- </div> -->
+        {/each}
+        {/if}
+      </div>
     </div>
   {/if}
 
