@@ -95,23 +95,22 @@ export const guilds: Array<Guild> = [
   { en: 'Pattani', th: 'ปัตตานี' },
   { en: 'Yala', th: 'ยะลา' },
   { en: 'Narathiwat', th: 'นราธิวาส' },
-  { en: 'Phatthaya', th: 'พัทยา' },
   {
-    // 79
+    // 78
     custom: true,
     th: 'Hatyai Call Out',
     emoji: '🍗',
     slug: 'hatyai_call_out',
   },
   {
-    // 80
+    // 79
     custom: true,
     th: '9ทุน',
     emoji: '😎',
     slug: '9tun',
   },
   {
-    // 81
+    // 80
     custom: true,
     th: 'Onlyfans TH',
     emoji: '💸',
