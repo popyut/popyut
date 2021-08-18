@@ -337,8 +337,7 @@
         </div>
         {/if}
       </div>
-      <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
-        {#if showBodyLeader}
+      <div class="modalBody">
         {#each leaderboardGuilds as guild, idx}
           <div class="flex">
             <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
@@ -351,7 +350,6 @@
             </span>
           </div>
         {/each}
-        {/if}
       </div>
     </div>
   {/if}
@@ -429,13 +427,9 @@
 
   .modalBody {
     max-height: var(--max-leaderboard-height);
-    transition: max-height 0.4s;
-  }
-
-  .modalBody.open {
     overflow-y: scroll;
     padding: 0.75rem;
-    max-height: 60vh; /* Change this value according to your needs */
+    transition: max-height 0.4s;
   }
   @media only screen and (max-width: 1000px) {
     #top-3 {
