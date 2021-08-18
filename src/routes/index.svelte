@@ -38,6 +38,7 @@
   let cityGuild;
   let leaderboardGuilds: Array<any>;
   let showFullLeaderboard = false;
+  let showBodyLeader = false;
   let playSounds = true;
   let trueTotal = 0;
 
@@ -119,10 +120,10 @@
     return newValue;
   }
 
-  function spin(node) {
+  function spin(node: HTMLParagraphElement, t: {}) {
     return {
       duration: 100,
-      css: (t) => `transform: scale(${1.5 - 0.5 * t}) rotate(${-10 + t * 10}deg);`,
+      css: (t: number) => `transform: scale(${1.5 - 0.5 * t}) rotate(${-10 + t * 10}deg);`,
     };
   }
 
@@ -211,6 +212,17 @@
       } else {
         fetchGeoData();
       }
+    }
+  }
+
+  function showHideLeaderboard() {
+    showFullLeaderboard = !showFullLeaderboard
+    if (showFullLeaderboard) {
+      showBodyLeader = showFullLeaderboard
+    } else {
+      setTimeout(() => {
+        showBodyLeader = showFullLeaderboard
+      }, 400);
     }
   }
 
@@ -312,9 +324,10 @@
       <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
     {/each}
   </select>
+  <div style="min-height: 25vh"></div>
 
   {#if leaderboardGuilds !== undefined}
-    <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
+    <!-- <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
       <h3 class="text-center mb-3 font-medium">Leaderboard</h3>
       {#each leaderboardGuilds.slice(0, 5) as guild, idx}
         <div class="flex">
@@ -328,14 +341,31 @@
         </div>
       {/each}
       <p class="text-gray-700 text-center w-full mt-2">See more</p>
-    </div>
+    </div> -->
 
-    <div class={`modal ${showFullLeaderboard && 'open'}`}>
+    <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
       <div class="modalContent w-80">
-        <div class="modalHeader" on:click={() => (showFullLeaderboard = false)}>
-          Leaderboard <span class="text-right font-sm text-gray-400">Close</span>
+        <div class="modalHeader" on:click={showHideLeaderboard}>
+          <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
+            <span class="font-medium">Leaderboard</span>
+            <span class="text-right font-sm text-gray-400">
+              {#if showFullLeaderboard}
+                close
+              {:else}
+                open
+              {/if}
+            </span>
+          </div>
+          {#if !showFullLeaderboard}
+          <div class="flex justify-between items-center pt-2">
+            {#each leaderboardGuilds.slice(0, 3) as guild, idx}
+              <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
+            {/each}
+          </div>
+          {/if}
         </div>
-        <div class="modalBody">
+        <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
+          {#if showBodyLeader}
           {#each leaderboardGuilds as guild, idx}
             <div class="flex">
               <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
@@ -348,8 +378,9 @@
               </span>
             </div>
           {/each}
+          {/if}
         </div>
-      </div>
+      <!-- </div> -->
     </div>
   {/if}
 
@@ -398,26 +429,34 @@
 
   .modalContent {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-height: 30%;
-    min-width: 30%;
+    /* top: 50%; */
+    bottom: 0;
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    /* min-height: 30%; */
+    min-width: 50%;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
   }
 
   .modalHeader {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; */
     padding: 0.75rem;
     border-bottom: 1px solid #eaeaea;
+    white-space: nowrap;
+    overflow-y: hidden;
   }
 
   .modalBody {
+    max-height: .001vh;
+    transition: max-height 0.4s;
+  }
+
+  .modalBody.open {
+    overflow-y: scroll;
     padding: 0.75rem;
     max-height: 60vh; /* Change this value according to your needs */
-    overflow: auto;
   }
 </style>
