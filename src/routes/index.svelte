@@ -382,6 +382,10 @@
     -ms-user-select: none; /* Internet Explorer/Edge */
   }
 
+  select {
+    text-align-last: center;
+  }
+
   #localCounter {
     font-family: 'Permanent Marker';
     -webkit-text-stroke: 3px black;
