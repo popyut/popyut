@@ -341,7 +341,7 @@
     </div> -->
 
     <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
-      <div class="modalContent w-80">
+      <div class="modalContent w-80 {`${showFullLeaderboard && 'open'}`}">
         <div class="modalHeader" on:click={showHideLeaderboard}>
           <div class="title flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
             <span class="font-medium">Leaderboard</span>
@@ -359,8 +359,7 @@
             {/each}
           </div>
         </div>
-        <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
-          {#if showBodyLeader}
+        <div class="modalBody">
           {#each leaderboardGuilds as guild, idx}
             <div class="flex">
               <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
@@ -373,7 +372,6 @@
               </span>
             </div>
           {/each}
-          {/if}
         </div>
       <!-- </div> -->
     </div>
@@ -423,6 +421,7 @@
   }
 
   .modalContent {
+    --max-leaderboard-height: 60vh; /* Change this value according to your needs */
     position: absolute;
     /* top: 50%; */
     bottom: 0;
@@ -432,7 +431,16 @@
     min-width: 50%;
     width: fit-content;
     background-color: white;
+    transition: max-height 0.4s;
     border-radius: 10px 10px 0 0;
+    overflow-y: hidden;
+    /* TODO: Make height not be estimated? */
+    max-height: 5.25rem; /* Estimate height of modalHeader */
+  }
+
+  .modalContent.open {
+    /* TODO: Make height not be estimated? */
+    max-height: calc(var(--max-leaderboard-height) + 3.05rem) /* 3.05rem is an estimated value */;
   }
 
   .modalHeader {
@@ -458,14 +466,8 @@
   }
 
   .modalBody {
-    max-height: .001vh;
-    transition: max-height 0.4s;
-    overflow: auto;
-  }
-
-  .modalBody.open {
+    max-height: var(--max-leaderboard-height);
     overflow-y: scroll;
     padding: 0.75rem;
-    max-height: 60vh; /* Change this value according to your needs */
   }
 </style>
