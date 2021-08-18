@@ -14,18 +14,20 @@
   import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
+  const audioPath = "https://storage.googleapis.com/assets.prayut.click/sounds"
+
   const pops = [
-    new Howl({ src: ['audio/pop1.ogg', 'audio/pop1.mp3'] }),
-    new Howl({ src: ['audio/pop2.ogg', 'audio/pop2.mp3'] }),
-    new Howl({ src: ['audio/pop3.ogg', 'audio/pop3.mp3'] }),
-    new Howl({ src: ['audio/pop4.ogg', 'audio/pop4.mp3'] }),
+    new Howl({ src: [audioPath + '/pop1.ogg', audioPath + '/pop1.mp3'] }),
+    new Howl({ src: [audioPath + '/pop2.ogg', audioPath + '/pop2.mp3'] }),
+    new Howl({ src: [audioPath + '/pop3.ogg', audioPath + '/pop3.mp3'] }),
+    new Howl({ src: [audioPath + '/pop4.ogg', audioPath + '/pop4.mp3'] }),
   ];
 
   const comboSounds = [
-    new Howl({ src: ['audio/naja.mp3'] }),
-    new Howl({ src: ['audio/najaaaaa.mp3'] }),
-    new Howl({ src: ['audio/thaiwin.mp3'] }),
-    new Howl({ src: ['audio/not-my-senpai.mp3'] }),
+    new Howl({ src: [audioPath + '/naja.mp3'] }),
+    new Howl({ src: [audioPath + '/najaaaaa.mp3'] }),
+    new Howl({ src: [audioPath + '/thaiwin.mp3'] }),
+    new Howl({ src: [audioPath + '/not-my-senpai.mp3'] }),
   ];
 
   let najaCount = 100;
