@@ -326,7 +326,7 @@
           </div>
         {/if}
       </div>
-      <div class="modalBody {showFullLeaderboard && 'overflow-y-scroll p-3 max-h-60'}">
+      <div class="modalBody p-3 overflow-y-scroll {showFullLeaderboard && 'max-h-60'}">
         {#if showBodyLeader}
           {#each leaderboardGuilds as guild, idx}
             <div class="flex">
@@ -404,8 +404,6 @@
 
   .modalBody {
     max-height: var(--max-leaderboard-height);
-    overflow-y: scroll;
-    padding: 0.75rem;
     transition: max-height 0.4s;
   }
 </style>
