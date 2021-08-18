@@ -438,7 +438,7 @@
   }
   @media only screen and (max-width: 700px) {
     .modalContent {
-      max-height: 8.75rem;
+      max-height: 8.65rem;
     }
     .modalHeader {
       padding-bottom: 4rem;
