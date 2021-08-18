@@ -245,7 +245,10 @@
 
   <meta name="title" content="POPYUT (Beta)" />
   <meta name="description" content="POPYUT" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
   <meta property="og:url" content="https://prayut.click" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="POPYUT" />
@@ -342,7 +345,7 @@
 
     <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
       <div class="modalContent w-80 {`${showFullLeaderboard && 'open'}`}">
-        <div class="modalHeader" on:click={showHideLeaderboard}>
+        <div class="modalHeader {`${showFullLeaderboard && 'open'}`}" on:click={showHideLeaderboard}>
           <div class="title flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
             <span class="font-medium">Leaderboard</span>
             <span class="text-right font-sm text-gray-400">
@@ -469,5 +472,16 @@
     max-height: var(--max-leaderboard-height);
     overflow-y: scroll;
     padding: 0.75rem;
+  }
+  @media only screen and (max-width: 870px) {
+    .modalContent {
+      max-height: 8.75rem;
+    }
+    .modalHeader {
+      padding-bottom: 4rem;
+    }
+    .modalHeader.open {
+      padding-bottom: 0.75rem;
+    }
   }
 </style>
