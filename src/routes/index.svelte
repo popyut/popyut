@@ -65,7 +65,6 @@
     count.update((n) => n + 1);
     total.set(++trueTotal);
     playPop();
-    playNaja();
     bgIndex = 1;
   }
 
@@ -86,15 +85,12 @@
   }
 
   function playPop() {
-    pops[audioIndex].play();
-    audioIndex = (audioIndex + 1) % 4;
-  }
-
-  function playNaja() {
     if ($count % najaCount === 0) {
       const randIndex = ~~(Math.random() * comboSounds.length);
-
       comboSounds[randIndex].play();
+    } else {
+      pops[audioIndex].play();
+      audioIndex = (audioIndex + 1) % 4;
     }
   }
 
@@ -259,13 +255,13 @@
   <meta property="og:description" content="A loud-mouthed popping dictator" />
   <meta
     property="og:image"
-    content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
+    content={imageUrls[0]}
   />
   <meta name="twitter:title" content="POPYUT" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
+    content={imageUrls[0]}
   />
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
