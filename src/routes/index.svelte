@@ -316,7 +316,7 @@
   <div style="min-height: 70vh"></div>
 
   {#if leaderboardGuilds !== undefined}
-    <div class="modalContent w-80">
+    <div class="modalContent w-80 {showFullLeaderboard && 'open'}">
       <div class="modalHeader" on:click={showHideLeaderboard}>
         <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
           <span class="">
@@ -330,9 +330,9 @@
           </span>
         </div>
         {#if !showFullLeaderboard}
-        <div class="flex justify-between items-center pt-2">
+        <div id="top-three" class="flex justify-between items-center pt-2">
           {#each leaderboardGuilds.slice(0, 3) as guild, idx}
-            <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
+            <span id={'top-'+String(idx + 1)}>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
           {/each}
         </div>
         {/if}
@@ -395,7 +395,6 @@
     z-index: 2;
     display: none;
     transition: all 0.3s ease;
-    /* font-size: 1.5rem; */
   }
 
   .modal.open {
@@ -403,29 +402,33 @@
   }
 
   .modalContent {
+    --max-leaderboard-height: 60vh; /* Change this value according to your needs */
     position: absolute;
-    /* top: 50%; */
     bottom: 0;
-    /* left: 50%; */
-    /* transform: translate(-50%, -50%); */
-    /* min-height: 30%; */
     min-width: 50%;
     background-color: white;
+    transition: max-height 0.4s;
     border-radius: 10px 10px 0 0;
+    overflow-y: hidden;
+    /* TODO: Make height not be estimated? */
+    max-height: 5.25rem; /* Estimate height of modalHeader */
+  }
+
+  .modalContent.open {
+    /* TODO: Make height not be estimated? */
+    max-height: calc(var(--max-leaderboard-height) + 3.05rem) /* 3.05rem is an estimated value */;
   }
 
   .modalHeader {
-    /* display: flex;
-    align-items: center;
-    justify-content: space-between; */
     padding: 0.75rem;
     border-bottom: 1px solid #eaeaea;
     white-space: nowrap;
     overflow-y: hidden;
+    cursor: pointer;
   }
 
   .modalBody {
-    max-height: .001vh;
+    max-height: var(--max-leaderboard-height);
     transition: max-height 0.4s;
   }
 
@@ -433,5 +436,29 @@
     overflow-y: scroll;
     padding: 0.75rem;
     max-height: 60vh; /* Change this value according to your needs */
+  }
+  @media only screen and (max-width: 1000px) {
+    #top-3 {
+      display: none;
+    }
+  }
+  @media only screen and (max-width: 700px) {
+    .modalContent {
+      max-height: 8.75rem;
+    }
+    .modalHeader {
+      padding-bottom: 4rem;
+    }
+    .modalHeader.open {
+      padding-bottom: 0.75rem;
+    }
+  }
+  @media only screen and (max-width: 680px) {
+    #top-2 {
+      display: none;
+    }
+    #top-three {
+      justify-content: center;
+    }
   }
 </style>
