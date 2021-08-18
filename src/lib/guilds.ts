@@ -1,4 +1,18 @@
-export const guilds = [
+type Guild = ProvinceGuild | CustomGuild;
+
+interface ProvinceGuild {
+  id: number;
+  en: string;
+  th: string;
+}
+
+interface CustomGuild extends ProvinceGuild {
+  id: number;
+  custom: boolean;
+  slug: string;
+}
+
+export const guilds: Array<Guild> = [
   { en: 'Bangkok', th: 'กรุงเทพมหานคร' },
   { en: 'Samut Prakan', th: 'สมุทรปราการ' },
   { en: 'Nonthaburi', th: 'นนทบุรี' },
@@ -77,4 +91,25 @@ export const guilds = [
   { en: 'Yala', th: 'ยะลา' },
   { en: 'Narathiwat', th: 'นราธิวาส' },
   { en: 'Phatthaya', th: 'พัทยา' },
+  {
+    custom: true,
+    en: 'Hatyai Call Out',
+    th: 'Hatyai Call Out',
+    emoji: '🍗',
+    slug: 'hatyai_call_out',
+  },
+  {
+    custom: true,
+    en: '9ทุน',
+    th: '9ทุน',
+    emoji: '😎',
+    slug: '9tun',
+  },
+  {
+    custom: true,
+    en: 'Onlyfans TH',
+    th: 'Onlyfans TH',
+    emoji: '💸',
+    slug: 'onlyfans_th',
+  },
 ].map((entry, idx) => ({ id: idx + 1, ...entry }));

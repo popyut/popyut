@@ -157,7 +157,7 @@
     guildName = cityGuild?.th;
 
     if (browser) {
-      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
+      goto(`?g=${getGuildSlug(cityGuild)}`, { replaceState: true });
     }
   }
 
@@ -168,7 +168,7 @@
     guildName = cityGuild?.th;
 
     if (browser) {
-      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
+      goto(`?g=${getGuildSlug(cityGuild)}`, { replaceState: true });
     }
   }
 
@@ -186,7 +186,7 @@
       const guildParam = searchParams.get('g');
 
       if (guildParam) {
-        cityGuild = guilds.find((g) => provinceGuildSlug(g.en) === guildParam);
+        cityGuild = guilds.find((g) => getGuildSlug(g) === guildParam);
 
         guildName = cityGuild?.th;
       } else {
@@ -206,10 +206,14 @@
     }
   }
 
-  function provinceGuildSlug(name: string) {
-    const provinceName = name.toLowerCase().split(' ').join('');
-    const provinceNameWithSuffix = provinceName.replace(/[aeiou]$/, '') + 'ian';
-    return provinceNameWithSuffix;
+  function getGuildSlug({ custom, en, slug }) {
+    if (custom) {
+      return slug;
+    }
+
+    const name = en.toLowerCase().split(' ').join('');
+    const nameWithSuffix = name.replace(/[aeiou]$/, '') + 'ian';
+    return nameWithSuffix;
   }
 
   setGuildFromQueryString();
@@ -233,16 +237,10 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="POPYUT" />
   <meta property="og:description" content="A loud-mouthed popping dictator" />
-  <meta
-    property="og:image"
-    content={imageUrls[1]}
-  />
+  <meta property="og:image" content={imageUrls[1]} />
   <meta name="twitter:title" content="POPYUT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:image"
-    content={imageUrls[1]}
-  />
+  <meta name="twitter:image" content={imageUrls[1]} />
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6FLPY30SGR"></script>
