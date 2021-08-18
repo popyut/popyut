@@ -235,13 +235,13 @@
   <meta property="og:description" content="A loud-mouthed popping dictator" />
   <meta
     property="og:image"
-    content={imageUrls[0]}
+    content={imageUrls[1]}
   />
   <meta name="twitter:title" content="POPYUT" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content={imageUrls[0]}
+    content={imageUrls[1]}
   />
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
