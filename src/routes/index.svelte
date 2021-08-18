@@ -366,17 +366,20 @@
             </span>
           </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         {/each}
         {/if}
       </div>
 =======
           {#if !showFullLeaderboard}
           <div class="top-three flex justify-between items-center pt-2">
+=======
+          <div class="top-three flex justify-between items-center pt-2 {`${showFullLeaderboard && 'hide'}`}">
+>>>>>>> 69cdda3 (max out leaderboard width when top-three element is hidden)
             {#each leaderboardGuilds.slice(0, 3) as guild, idx}
               <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
             {/each}
           </div>
-          {/if}
         </div>
         <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
           {#if showBodyLeader}
@@ -471,6 +474,13 @@
 
   .modalHeader .top-three {
     gap: 0.75rem;
+  }
+
+  .modalHeader .top-three.hide {
+    visibility: hidden;
+    padding: 0;
+    margin: 0;
+    height: 0;
   }
 
   .modalBody {
