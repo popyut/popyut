@@ -347,6 +347,7 @@
           </div>
           {/if}
         </div>
+        {#if showFullLeaderboard}
         <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
           {#each leaderboardGuilds as guild, idx}
             <div class="flex">
@@ -361,6 +362,7 @@
             </div>
           {/each}
         </div>
+        {/if}
       <!-- </div> -->
     </div>
   {/if}
