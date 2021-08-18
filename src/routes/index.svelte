@@ -14,7 +14,7 @@
   import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
-  const audioPath = "https://storage.googleapis.com/assets.prayut.click/sounds"
+  const audioPath = 'https://storage.googleapis.com/assets.prayut.click/sounds';
 
   const pops = [
     new Howl({ src: [audioPath + '/pop1.ogg', audioPath + '/pop1.mp3'] }),
@@ -97,7 +97,7 @@
   }
 
   function abbreviateNumber(value: number) {
-    return new Intl.NumberFormat('th-TH', {notation: 'compact'}).format(value);
+    return new Intl.NumberFormat('th-TH', { notation: 'compact' }).format(value);
   }
 
   function spin(node: HTMLParagraphElement, t: {}) {
@@ -196,12 +196,12 @@
   }
 
   function showHideLeaderboard() {
-    showFullLeaderboard = !showFullLeaderboard
+    showFullLeaderboard = !showFullLeaderboard;
     if (showFullLeaderboard) {
-      showBodyLeader = showFullLeaderboard
+      showBodyLeader = showFullLeaderboard;
     } else {
       setTimeout(() => {
-        showBodyLeader = showFullLeaderboard
+        showBodyLeader = showFullLeaderboard;
       }, 400);
     }
   }
@@ -255,7 +255,10 @@
     gtag('config', 'G-6FLPY30SGR');
   </script>
 
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Permanent+Marker:300,400,600,700&amp;lang=en" />
+  <link
+    rel="stylesheet"
+    href="//fonts.googleapis.com/css?family=Permanent+Marker:300,400,600,700&amp;lang=en"
+  />
 </svelte:head>
 
 <main
@@ -287,20 +290,25 @@
 
   {#key $count}
     <h1 id="localCounter" class="noselect text-7xl text-white mt-4 rounded p-2 items-start" in:spin>
-      {$count % 100 ? $count.toLocaleString() : "POPYUT"}
+      {$count % 100 ? $count.toLocaleString() : 'POPYUT'}
     </h1>
   {/key}
 
-  <div style="min-height: 70vh"></div>
+  <div style="min-height: 70vh" />
 
   {#if leaderboardGuilds !== undefined}
-    <div class="modalContent absolute bottom-0 w-80 max-h-36 sm:max-h-20 bg-white rounded-t-xl overflow-y-hidden {showFullLeaderboard && 'open'}">
-      <div class="cursor-pointer border-b whitespace-nowrap overflow-y-hidden p-3 sm:p-3 {showFullLeaderboard ? 'pb-3' : 'pb-16'}" on:click={showHideLeaderboard}>
+    <div
+      class="modalContent absolute bottom-0 w-80 max-h-36 sm:max-h-20 bg-white rounded-t-xl overflow-y-hidden {showFullLeaderboard &&
+        'open'}"
+    >
+      <div
+        class="cursor-pointer border-b whitespace-nowrap overflow-y-hidden p-3 sm:p-3 {showFullLeaderboard
+          ? 'pb-3'
+          : 'pb-16'}"
+        on:click={showHideLeaderboard}
+      >
         <div class="flex justify-between items-center {!showFullLeaderboard && 'pb-1 border-b'}">
-
-          <span class="">
-            Leaderboard
-          </span>
+          <span>Leaderboard</span>
           <span class="text-right">
             <span class="text-xs mr-2 text-green-400"
               >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
@@ -309,44 +317,63 @@
           </span>
         </div>
         {#if !showFullLeaderboard}
-        <div class="flex sm:justify-between items-center pt-2 justify-center">
-          {#each leaderboardGuilds.slice(0, 3) as guild, idx}
-            <span class="{(idx === 0) ? 'block' : idx === 1 ? 'hidden sm:block' : 'hidden lg:block'}">{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
-          {/each}
-        </div>
+          <div class="flex sm:justify-between items-center pt-2 justify-center">
+            {#each leaderboardGuilds.slice(0, 3) as guild, idx}
+              <span class={idx === 0 ? 'block' : idx === 1 ? 'hidden sm:block' : 'hidden lg:block'}
+                >{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span
+              >
+            {/each}
+          </div>
         {/if}
       </div>
       <div class="modalBody {showFullLeaderboard && 'overflow-y-scroll p-3 max-h-60'}">
         {#if showBodyLeader}
-
-        {#each leaderboardGuilds as guild, idx}
-          <div class="flex">
-            <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
-            <span>
-              {#if guild.rate > 0}
-                <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
-                >
-              {/if}
-              {guild.total.toLocaleString()}
-            </span>
-          </div>
-        {/each}
+          {#each leaderboardGuilds as guild, idx}
+            <div class="flex">
+              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+              <span>
+                {#if guild.rate > 0}
+                  <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
+                  >
+                {/if}
+                {guild.total.toLocaleString()}
+              </span>
+            </div>
+          {/each}
+        {/if}
       </div>
     </div>
   {/if}
 
   <Kofi name="narze" />
 
-  <div
-    class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10"
-  >
-    <a href="https://twitter.com/PrayutClick" class="p-1 bg-white rounded" target="_blank" rel="noreferrer">@PrayutClick</a>
-    <a href="https://github.com/narze/popyut" class="p-1 bg-white rounded" target="_blank" rel="noreferrer">GitHub</a>
-    <!-- | <a href="https://thailand-grand-opening.web.app" target="_blank" rel="noreferrer"
-      >120วันเปิดประเทศ?</a
+  <div class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10">
+    <a
+      href="https://twitter.com/PrayutClick"
+      class="p-1 bg-white rounded"
+      target="_blank"
+      rel="noreferrer">@PrayutClick</a
     >
-    |
-    <a href="https://watasalim.vercel.app" target="_blank" rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a> -->
+    <a
+      href="https://github.com/narze/popyut"
+      class="p-1 bg-white rounded"
+      target="_blank"
+      rel="noreferrer">GitHub</a
+    >
+    <!--
+    <a
+      href="https://thailand-grand-opening.web.app"
+      class="p-1 bg-white rounded"
+      target="_blank"
+      rel="noreferrer">120วันเปิดประเทศ?</a
+    >
+    <a
+      href="https://watasalim.vercel.app"
+      class="p-1 bg-white rounded"
+      target="_blank"
+      rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a
+    >
+    -->
   </div>
 </main>
 
@@ -358,7 +385,7 @@
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
   }
-  
+
   #localCounter {
     font-family: 'Permanent Marker';
     -webkit-text-stroke: 3px black;
