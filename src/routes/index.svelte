@@ -52,10 +52,8 @@
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
   const imageUrls = [
-    'https://i.imgur.com/qAT7YUY.jpg',
-    'https://i.imgur.com/5s87Xgb.jpg',
-    'https://i.imgur.com/g3oLmKI.jpg',
-    'https://i.imgur.com/U0r4aAO.jpg',
+    'https://storage.googleapis.com/assets.prayut.click/images/prayut.jpg',
+    'https://storage.googleapis.com/assets.prayut.click/images/prayutpop.jpg',
   ];
 
   function incrementCount() {
@@ -70,11 +68,12 @@
       playPop();
       playNaja();
     }
-    changeBg();
+    bgIndex = 1;
   }
 
   function unlockDebounce() {
     debounceState = false;
+    bgIndex = 0;
   }
 
   function playPop() {
@@ -88,10 +87,6 @@
 
       comboSounds[randIndex].play();
     }
-  }
-
-  function changeBg() {
-    bgIndex = (bgIndex + 1) % imageUrls.length;
   }
 
   /**
