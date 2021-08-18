@@ -38,6 +38,7 @@
   let cityGuild;
   let leaderboardGuilds: Array<any>;
   let showFullLeaderboard = false;
+  let showBodyLeader = false;
   let playSounds = true;
   let trueTotal = 0;
 
@@ -214,6 +215,17 @@
     }
   }
 
+  function showHideLeaderboard() {
+    showFullLeaderboard = !showFullLeaderboard
+    if (showFullLeaderboard) {
+      showBodyLeader = showFullLeaderboard
+    } else {
+      setTimeout(() => {
+        showBodyLeader = showFullLeaderboard
+      }, 400);
+    }
+  }
+
   function provinceGuildSlug(name: string) {
     const provinceName = name.toLowerCase().split(' ').join('');
     const provinceNameWithSuffix = provinceName.replace(/[aeiou]$/, '') + 'ian';
@@ -330,14 +342,16 @@
 
     <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
       <div class="modalContent w-80">
-        <div class="modalHeader" on:click={() => (showFullLeaderboard = !showFullLeaderboard)}>
+        <div class="modalHeader" on:click={showHideLeaderboard}>
           <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
             <span class="font-medium">Leaderboard</span>
-            {#if showFullLeaderboard}
-              <span class="text-right font-sm text-gray-400">close</span>
-            {:else}
-              <span class="text-right font-sm text-gray-400">open</span>
-            {/if}
+            <span class="text-right font-sm text-gray-400">
+              {#if showFullLeaderboard}
+                close
+              {:else}
+                open
+              {/if}
+            </span>
           </div>
           {#if !showFullLeaderboard}
           <div class="flex justify-between items-center pt-2">
@@ -347,8 +361,8 @@
           </div>
           {/if}
         </div>
-        {#if showFullLeaderboard}
         <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
+          {#if showBodyLeader}
           {#each leaderboardGuilds as guild, idx}
             <div class="flex">
               <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
@@ -361,8 +375,8 @@
               </span>
             </div>
           {/each}
+          {/if}
         </div>
-        {/if}
       <!-- </div> -->
     </div>
   {/if}
