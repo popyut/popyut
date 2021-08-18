@@ -39,23 +39,21 @@
   let leaderboardGuilds: Array<any>;
   let showFullLeaderboard = false;
   let showBodyLeader = false;
-  let playSounds = true;
   let trueTotal = 0;
+  let touchEvents = false;
 
   let lastCount = $count;
 
   const total = tweened(0, {
-    duration: 1000,
+    duration: 5000,
     easing: cubicOut,
   });
 
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
   const imageUrls = [
-    'https://i.imgur.com/qAT7YUY.jpg',
-    'https://i.imgur.com/5s87Xgb.jpg',
-    'https://i.imgur.com/g3oLmKI.jpg',
-    'https://i.imgur.com/U0r4aAO.jpg',
+    'https://storage.googleapis.com/assets.prayut.click/images/prayut.jpg',
+    'https://storage.googleapis.com/assets.prayut.click/images/prayutpop.jpg',
   ];
 
   function incrementCount() {
@@ -66,32 +64,34 @@
 
     count.update((n) => n + 1);
     total.set(++trueTotal);
-    if (playSounds) {
-      playPop();
-      playNaja();
+    playPop();
+    bgIndex = 1;
+  }
+
+  function touchStart() {
+    touchEvents = true;
+    incrementCount();
+  }
+
+  function mouseDown() {
+    if (!touchEvents) {
+      incrementCount();
     }
-    changeBg();
   }
 
   function unlockDebounce() {
     debounceState = false;
+    bgIndex = 0;
   }
 
   function playPop() {
-    pops[audioIndex].play();
-    audioIndex = (audioIndex + 1) % 4;
-  }
-
-  function playNaja() {
     if ($count % najaCount === 0) {
       const randIndex = ~~(Math.random() * comboSounds.length);
-
       comboSounds[randIndex].play();
+    } else {
+      pops[audioIndex].play();
+      audioIndex = (audioIndex + 1) % 4;
     }
-  }
-
-  function changeBg() {
-    bgIndex = (bgIndex + 1) % imageUrls.length;
   }
 
   /**
@@ -241,10 +241,10 @@
 <svelte:body on:keydown={incrementCount} on:keyup={unlockDebounce} />
 
 <svelte:head>
-  <title>POPYUT (Beta)</title>
+  <title>POPYUT</title>
 
-  <meta name="title" content="POPYUT (Beta)" />
-  <meta name="description" content="POPYUT" />
+  <meta name="title" content="POPYUT" />
+  <meta name="description" content="A loud-mouthed popping dictator" />
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -252,16 +252,16 @@
   <meta property="og:url" content="https://prayut.click" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="POPYUT" />
-  <meta property="og:description" content="A loud-mouthed popping despot" />
+  <meta property="og:description" content="A loud-mouthed popping dictator" />
   <meta
     property="og:image"
-    content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
+    content={imageUrls[0]}
   />
   <meta name="twitter:title" content="POPYUT" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta
     name="twitter:image"
-    content="https://raw.githubusercontent.com/narze/timelapse/master/projects/popyut_home.png"
+    content={imageUrls[0]}
   />
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -274,12 +274,17 @@
     gtag('js', new Date());
     gtag('config', 'G-6FLPY30SGR');
   </script>
+
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Permanent+Marker:300,400,600,700&amp;lang=en" />
 </svelte:head>
 
 <main
   bind:this={main}
   class="w-full h-screen flex flex-col items-center justify-center bg-transparent"
-  on:mousedown={incrementCount}
+  on:touchstart={touchStart}
+  on:mousedown={mouseDown}
+  on:touchend={unlockDebounce}
+  on:touchcancel={unlockDebounce}
   on:mouseup={unlockDebounce}
 >
   {#each imageUrls as url, idx}
@@ -289,34 +294,9 @@
       class={`${idx === bgIndex ? 'block' : 'hidden'} fixed object-cover w-full h-full -z-10`}
     />
   {/each}
-  <h1 class="noselect mt-40 text-6xl border-black text-white rounded p-2 flex bg-black items-start">
-    POPYUT
-    <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
-  </h1>
-
-  {#key $count}
-    <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2" in:spin>
-      {$count.toLocaleString()}
-    </p>
-  {/key}
-
-  <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
-    Total: {Math.round($total).toLocaleString()}
-    <span class="text-xs ml-1 text-green-400"
-      >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
-    >
-  </p>
-
-  <label class="my-4"><input type="checkbox" bind:checked={playSounds} /> Play sounds</label>
-
-  {#if guildName !== undefined}
-    <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
-      Guild: {guildName}
-    </p>
-  {/if}
 
   <select
-    class="mt-4 justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+    class="justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
     on:change={changeGuild}
   >
     <option>เลือก Guild ของคุณ</option>
@@ -324,21 +304,48 @@
       <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
     {/each}
   </select>
-  <div style="min-height: 25vh"></div>
+
+  {#key $count}
+    <h1 id="localCounter" class="noselect text-7xl text-white mt-4 rounded p-2 items-start" in:spin>
+      {$count % 100 ? $count.toLocaleString() : "POPYUT"}
+    </h1>
+  {/key}
+
+  <div style="min-height: 70vh"></div>
 
   {#if leaderboardGuilds !== undefined}
-    <!-- <div class="bg-white rounded w-80 mt-8 p-4" on:click={() => (showFullLeaderboard = true)}>
-      <h3 class="text-center mb-3 font-medium">Leaderboard</h3>
-      {#each leaderboardGuilds.slice(0, 5) as guild, idx}
-        <div class="flex">
-          <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
-          <span>
-            {#if guild.rate > 0}
-              <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span>
-            {/if}
-            {guild.total.toLocaleString()}
+    <div class="modalContent w-80">
+      <div class="modalHeader" on:click={showHideLeaderboard}>
+        <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
+          <span class="">
+            Leaderboard
+          </span>
+          <span class="text-right">
+            <span class="text-xs mr-2 text-green-400"
+              >{pps !== undefined ? `${abbreviateNumber(pps)} PPS` : '...'}</span
+            >
+            {Math.round($total).toLocaleString()}
           </span>
         </div>
+<<<<<<< HEAD
+        {#if !showFullLeaderboard}
+        <div class="flex justify-between items-center pt-2">
+          {#each leaderboardGuilds.slice(0, 3) as guild, idx}
+            <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
+          {/each}
+        </div>
+        {/if}
+      </div>
+      <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
+        {#if showBodyLeader}
+        {#each leaderboardGuilds as guild, idx}
+          <div class="flex">
+            <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+            <span>
+              {#if guild.rate > 0}
+                <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
+                >
+=======
       {/each}
       <p class="text-gray-700 text-center w-full mt-2">See more</p>
     </div> -->
@@ -353,10 +360,26 @@
                 close
               {:else}
                 open
+>>>>>>> bef7c87 (leaderboard fits content)
               {/if}
+              {guild.total.toLocaleString()}
             </span>
           </div>
+<<<<<<< HEAD
           <div class="top-three flex justify-between items-center pt-2 {`${showFullLeaderboard && 'hide'}`}">
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+        {/each}
+        {/if}
+      </div>
+=======
+          {#if !showFullLeaderboard}
+          <div class="top-three flex justify-between items-center pt-2">
+=======
+          <div class="top-three flex justify-between items-center pt-2 {`${showFullLeaderboard && 'hide'}`}">
+>>>>>>> 69cdda3 (max out leaderboard width when top-three element is hidden)
+>>>>>>> narze-main
             {#each leaderboardGuilds.slice(0, 3) as guild, idx}
               <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
             {/each}
@@ -377,23 +400,22 @@
           {/each}
         </div>
       <!-- </div> -->
+>>>>>>> bef7c87 (leaderboard fits content)
     </div>
   {/if}
 
   <Kofi name="narze" />
 
   <div
-    class="text-xs fixed sm:text-base bottom-4 right-4 p-1 text-right z-10 mb-0 bg-white rounded"
+    class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10"
   >
-    <div>
-      <a href="https://twitter.com/PrayutClick" target="_blank" rel="noreferrer">@PrayutClick</a> |
-      <a href="https://github.com/narze/popyut" target="_blank" rel="noreferrer">Github</a>
-      <!-- | <a href="https://thailand-grand-opening.web.app" target="_blank" rel="noreferrer"
-        >120วันเปิดประเทศ?</a
-      >
-      |
-      <a href="https://watasalim.vercel.app" target="_blank" rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a> -->
-    </div>
+    <a href="https://twitter.com/PrayutClick" class="p-1 bg-white rounded" target="_blank" rel="noreferrer">@PrayutClick</a>
+    <a href="https://github.com/narze/popyut" class="p-1 bg-white rounded" target="_blank" rel="noreferrer">GitHub</a>
+    <!-- | <a href="https://thailand-grand-opening.web.app" target="_blank" rel="noreferrer"
+      >120วันเปิดประเทศ?</a
+    >
+    |
+    <a href="https://watasalim.vercel.app" target="_blank" rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a> -->
   </div>
 </main>
 
@@ -404,6 +426,11 @@
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
+  }
+  
+  #localCounter {
+    font-family: 'Permanent Marker';
+    -webkit-text-stroke: 3px black;
   }
 
   .modal {
@@ -459,6 +486,7 @@
 
   .modalHeader .top-three {
     gap: 0.75rem;
+<<<<<<< HEAD
   }
 
   .modalHeader .top-three.hide {
@@ -468,6 +496,17 @@
     height: 0;
   }
 
+=======
+  }
+
+  .modalHeader .top-three.hide {
+    visibility: hidden;
+    padding: 0;
+    margin: 0;
+    height: 0;
+  }
+
+>>>>>>> narze-main
   .modalBody {
     max-height: var(--max-leaderboard-height);
     overflow-y: scroll;
