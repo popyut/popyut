@@ -423,6 +423,7 @@
     white-space: nowrap;
     overflow-y: hidden;
     cursor: pointer;
+    transition: padding 0.4s;
   }
 
   .modalBody {
