@@ -103,7 +103,7 @@
   function abbreviateNumber(value: number) {
     let newValue: any = value;
     if (value >= 1000) {
-      var suffixes = ['', 'k', 'm', 'b', 't'];
+      var suffixes = ['', 'K', 'M', 'B', 'T'];
       var suffixNum = Math.floor(('' + value).length / 3);
       var shortValue: any = '';
       for (var precision = 2; precision >= 1; precision--) {
@@ -319,6 +319,7 @@
     <div class="modalContent absolute bottom-0 w-80 max-h-36 sm:max-h-20 bg-white rounded-t-xl overflow-y-hidden {showFullLeaderboard && 'open'}">
       <div class="cursor-pointer border-b whitespace-nowrap overflow-y-hidden p-3 sm:p-3 {showFullLeaderboard ? 'pb-3' : 'pb-16'}" on:click={showHideLeaderboard}>
         <div class="flex justify-between items-center {!showFullLeaderboard && 'pb-1 border-b'}">
+
           <span class="">
             Leaderboard
           </span>
@@ -339,6 +340,7 @@
       </div>
       <div class="modalBody {showFullLeaderboard && 'overflow-y-scroll p-3 max-h-60'}">
         {#if showBodyLeader}
+
         {#each leaderboardGuilds as guild, idx}
           <div class="flex">
             <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
@@ -351,7 +353,6 @@
             </span>
           </div>
         {/each}
-        {/if}
       </div>
     </div>
   {/if}
@@ -398,6 +399,8 @@
 
   .modalBody {
     max-height: var(--max-leaderboard-height);
+    overflow-y: scroll;
+    padding: 0.75rem;
     transition: max-height 0.4s;
   }
 </style>
