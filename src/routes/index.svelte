@@ -44,7 +44,7 @@
   let lastCount = $count;
 
   const total = tweened(0, {
-    duration: 3000,
+    duration: 5000,
     easing: cubicOut,
   });
 
@@ -273,7 +273,10 @@
 <main
   bind:this={main}
   class="w-full h-screen flex flex-col items-center justify-center bg-transparent"
+  on:touchstart={incrementCount}
   on:mousedown={incrementCount}
+  on:touchend={unlockDebounce}
+  on:touchcancel={unlockDebounce}
   on:mouseup={unlockDebounce}
 >
   {#each imageUrls as url, idx}
@@ -296,7 +299,7 @@
 
   {#key $count}
     <h1 id="localCounter" class="noselect text-7xl text-white mt-4 rounded p-2 items-start" in:spin>
-      {$count % 100 ? $count.toLocaleString() : "POPYUT"}<br>{bgIndex}
+      {$count % 100 ? $count.toLocaleString() : "POPYUT"}
     </h1>
   {/key}
 
