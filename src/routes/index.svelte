@@ -420,11 +420,13 @@
     border-bottom: 1px solid #eaeaea;
     white-space: nowrap;
     overflow-y: hidden;
+    cursor: pointer;
   }
 
   .modalBody {
     max-height: .001vh;
     transition: max-height 0.4s;
+    overflow: hidden;
   }
 
   .modalBody.open {
