@@ -361,17 +361,15 @@
   <Kofi name="narze" />
 
   <div
-    class="text-xs fixed sm:text-base bottom-4 right-4 p-1 text-right z-10 mb-0 bg-white rounded"
+    class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10"
   >
-    <div>
-      <a href="https://twitter.com/PrayutClick" target="_blank" rel="noreferrer">@PrayutClick</a> |
-      <a href="https://github.com/narze/popyut" target="_blank" rel="noreferrer">Github</a>
-      <!-- | <a href="https://thailand-grand-opening.web.app" target="_blank" rel="noreferrer"
-        >120วันเปิดประเทศ?</a
-      >
-      |
-      <a href="https://watasalim.vercel.app" target="_blank" rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a> -->
-    </div>
+    <a href="https://twitter.com/PrayutClick" class="p-1 bg-white rounded" target="_blank" rel="noreferrer">@PrayutClick</a>
+    <a href="https://github.com/narze/popyut" class="p-1 bg-white rounded" target="_blank" rel="noreferrer">GitHub</a>
+    <!-- | <a href="https://thailand-grand-opening.web.app" target="_blank" rel="noreferrer"
+      >120วันเปิดประเทศ?</a
+    >
+    |
+    <a href="https://watasalim.vercel.app" target="_blank" rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a> -->
   </div>
 </main>
 
