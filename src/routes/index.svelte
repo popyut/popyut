@@ -293,7 +293,7 @@
     <img
       src={url}
       alt="Popyut"
-      class={`${idx === bgIndex ? 'block' : 'hidden'} fixed object-cover w-full h-full -z-10`}
+      class="{idx === bgIndex ? 'block' : 'hidden'} fixed object-cover w-full h-full -z-10"
     />
   {/each}
 
@@ -316,9 +316,10 @@
   <div style="min-height: 70vh"></div>
 
   {#if leaderboardGuilds !== undefined}
-    <div class="modalContent w-80 {showFullLeaderboard && 'open'}">
-      <div class="modalHeader {showFullLeaderboard && 'open'}" on:click={showHideLeaderboard}>
-        <div class="flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
+    <div class="modalContent absolute bottom-0 w-80 max-h-36 sm:max-h-20 bg-white rounded-t-xl overflow-y-hidden {showFullLeaderboard && 'open'}">
+      <div class="cursor-pointer border-b whitespace-nowrap overflow-y-hidden p-3 sm:p-3 {showFullLeaderboard ? 'pb-3' : 'pb-16'}" on:click={showHideLeaderboard}>
+        <div class="flex justify-between items-center {!showFullLeaderboard && 'pb-1 border-b'}">
+
           <span class="">
             Leaderboard
           </span>
@@ -330,14 +331,16 @@
           </span>
         </div>
         {#if !showFullLeaderboard}
-        <div id="top-three" class="flex justify-between items-center pt-2">
+        <div class="flex sm:justify-between items-center pt-2 justify-center">
           {#each leaderboardGuilds.slice(0, 3) as guild, idx}
-            <span id={'top-'+String(idx + 1)}>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
+            <span class="{(idx === 0) ? 'block' : idx === 1 ? 'hidden sm:block' : 'hidden lg:block'}">{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
           {/each}
         </div>
         {/if}
       </div>
-      <div class="modalBody">
+      <div class="modalBody {showFullLeaderboard && 'overflow-y-scroll p-3 max-h-60'}">
+        {#if showBodyLeader}
+
         {#each leaderboardGuilds as guild, idx}
           <div class="flex">
             <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
@@ -383,34 +386,10 @@
     -webkit-text-stroke: 3px black;
   }
 
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    display: none;
-    transition: all 0.3s ease;
-  }
-
-  .modal.open {
-    display: block;
-  }
-
   .modalContent {
     --max-leaderboard-height: 60vh; /* Change this value according to your needs */
-    position: absolute;
-    bottom: 0;
     min-width: 50%;
-    width: fit-content;
-    background-color: white;
     transition: max-height 0.4s;
-    border-radius: 10px 10px 0 0;
-    overflow-y: hidden;
-    /* TODO: Make height not be estimated? */
-    max-height: 5.25rem; /* Estimate height of modalHeader */
   }
 
   .modalContent.open {
@@ -418,53 +397,10 @@
     max-height: calc(var(--max-leaderboard-height) + 3.05rem) /* 3.05rem is an estimated value */;
   }
 
-  .modalHeader {
-    padding: 0.75rem;
-    border-bottom: 1px solid #eaeaea;
-    white-space: nowrap;
-    overflow-y: hidden;
-    cursor: pointer;
-    transition: padding 0.4s;
-  }
-
   .modalBody {
     max-height: var(--max-leaderboard-height);
     overflow-y: scroll;
     padding: 0.75rem;
     transition: max-height 0.4s;
-  }
-
-  #top-three {
-    gap: 0.75rem;
-  }
-
-  @media only screen and (max-width: 1000px) {
-    #top-3 {
-      display: none;
-    }
-  }
-
-  @media only screen and (max-width: 700px) {
-    .modalContent {
-      max-height: 8.65rem;
-    }
-
-    .modalHeader {
-      padding-bottom: 4rem;
-    }
-
-    .modalHeader.open {
-      padding-bottom: 0.75rem;
-    }
-  }
-
-  @media only screen and (max-width: 680px) {
-    #top-2 {
-      display: none;
-    }
-
-    #top-three {
-      justify-content: center;
-    }
   }
 </style>
