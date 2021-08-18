@@ -54,8 +54,8 @@
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
   const imageUrls = [
-    'https://storage.googleapis.com/assets.prayut.click/images/prayut.jpg',
-    'https://storage.googleapis.com/assets.prayut.click/images/prayutpop.jpg',
+    'https://storage.googleapis.com/assets.prayut.click/images/popyut1.jpg',
+    'https://storage.googleapis.com/assets.prayut.click/images/popyut2.jpg',
   ];
 
   function incrementCount() {
@@ -96,30 +96,8 @@
     }
   }
 
-  /**
-   * Code From
-   * https://stackoverflow.com/questions/10599933/convert-long-number-into-abbreviated-string-in-javascript-with-a-special-shortn
-   */
   function abbreviateNumber(value: number) {
-    let newValue: any = value;
-    if (value >= 1000) {
-      var suffixes = ['', 'K', 'M', 'B', 'T'];
-      var suffixNum = Math.floor(('' + value).length / 3);
-      var shortValue: any = '';
-      for (var precision = 2; precision >= 1; precision--) {
-        shortValue = parseFloat(
-          (suffixNum != 0 ? value / Math.pow(1000, suffixNum) : value).toPrecision(precision),
-        );
-        var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
-        if (dotLessShortValue.length <= 2) {
-          break;
-        }
-      }
-      if (shortValue % 1 != 0) shortValue = shortValue.toFixed(1);
-      newValue = shortValue + suffixes[suffixNum];
-    }
-
-    return newValue;
+    return new Intl.NumberFormat('th-TH', {notation: 'compact'}).format(value);
   }
 
   function spin(node: HTMLParagraphElement, t: {}) {

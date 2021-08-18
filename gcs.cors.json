@@ -1,0 +1,10 @@
+{
+  "cors": [
+    {
+      "origin": ["https://prayut.click"],
+      "method": ["GET", "HEAD"],
+      "responseHeader": ["Content-Type"],
+      "maxAgeSeconds": 3600
+    }
+  ]
+}
