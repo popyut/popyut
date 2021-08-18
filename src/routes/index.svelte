@@ -269,6 +269,8 @@
     gtag('js', new Date());
     gtag('config', 'G-6FLPY30SGR');
   </script>
+
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Permanent+Marker:300,400,600,700&amp;lang=en" />
 </svelte:head>
 
 <main
@@ -284,15 +286,11 @@
       class={`${idx === bgIndex ? 'block' : 'hidden'} fixed object-cover w-full h-full -z-10`}
     />
   {/each}
-  <h1 class="noselect mt-40 text-6xl border-black text-white rounded p-2 flex bg-black items-start">
-    POPYUT
-    <span class="text-xs text-red-300 mt-2 ml-2">Beta</span>
-  </h1>
 
   {#key $count}
-    <p class="noselect text-5xl border-black text-white mt-8 bg-black rounded p-2" in:spin>
-      {$count.toLocaleString()}
-    </p>
+    <h1 id="localCounter" class="noselect text-6xl text-white mt-6 rounded p-2 items-start" in:spin>
+      {$count % 100 ? $count.toLocaleString() : "POPYUT"}
+    </h1>
   {/key}
 
   <p class="noselect text-3xl border-black text-white mt-8 bg-black rounded p-2">
@@ -403,6 +401,11 @@
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
+  }
+  
+  #localCounter {
+    font-family: 'Permanent Marker';
+    -webkit-text-stroke: 3px black;
   }
 
   .modal {
