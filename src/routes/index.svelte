@@ -327,6 +327,7 @@
             {Math.round($total).toLocaleString()}
           </span>
         </div>
+<<<<<<< HEAD
         {#if !showFullLeaderboard}
         <div class="flex justify-between items-center pt-2">
           {#each leaderboardGuilds.slice(0, 3) as guild, idx}
@@ -344,13 +345,57 @@
               {#if guild.rate > 0}
                 <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
                 >
+=======
+      {/each}
+      <p class="text-gray-700 text-center w-full mt-2">See more</p>
+    </div> -->
+
+    <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
+      <div class="modalContent w-80">
+        <div class="modalHeader" on:click={showHideLeaderboard}>
+          <div class="title flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
+            <span class="font-medium">Leaderboard</span>
+            <span class="text-right font-sm text-gray-400">
+              {#if showFullLeaderboard}
+                close
+              {:else}
+                open
+>>>>>>> bef7c87 (leaderboard fits content)
               {/if}
               {guild.total.toLocaleString()}
             </span>
           </div>
+<<<<<<< HEAD
         {/each}
         {/if}
       </div>
+=======
+          {#if !showFullLeaderboard}
+          <div class="top-three flex justify-between items-center pt-2">
+            {#each leaderboardGuilds.slice(0, 3) as guild, idx}
+              <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
+            {/each}
+          </div>
+          {/if}
+        </div>
+        <div class={`modalBody ${showFullLeaderboard && 'open'}`}>
+          {#if showBodyLeader}
+          {#each leaderboardGuilds as guild, idx}
+            <div class="flex">
+              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+              <span>
+                {#if guild.rate > 0}
+                  <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
+                  >
+                {/if}
+                {guild.total.toLocaleString()}
+              </span>
+            </div>
+          {/each}
+          {/if}
+        </div>
+      <!-- </div> -->
+>>>>>>> bef7c87 (leaderboard fits content)
     </div>
   {/if}
 
@@ -408,6 +453,7 @@
     /* transform: translate(-50%, -50%); */
     /* min-height: 30%; */
     min-width: 50%;
+    width: fit-content;
     background-color: white;
     border-radius: 10px 10px 0 0;
   }
@@ -421,6 +467,10 @@
     white-space: nowrap;
     overflow-y: hidden;
     cursor: pointer;
+  }
+
+  .modalHeader .top-three {
+    gap: 0.75rem;
   }
 
   .modalBody {
