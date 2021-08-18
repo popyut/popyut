@@ -14,18 +14,20 @@
   import { guilds } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
+  const audioPath = "https://storage.googleapis.com/assets.prayut.click/sounds"
+
   const pops = [
-    new Howl({ src: ['audio/pop1.ogg', 'audio/pop1.mp3'] }),
-    new Howl({ src: ['audio/pop2.ogg', 'audio/pop2.mp3'] }),
-    new Howl({ src: ['audio/pop3.ogg', 'audio/pop3.mp3'] }),
-    new Howl({ src: ['audio/pop4.ogg', 'audio/pop4.mp3'] }),
+    new Howl({ src: [audioPath + '/pop1.ogg', audioPath + '/pop1.mp3'] }),
+    new Howl({ src: [audioPath + '/pop2.ogg', audioPath + '/pop2.mp3'] }),
+    new Howl({ src: [audioPath + '/pop3.ogg', audioPath + '/pop3.mp3'] }),
+    new Howl({ src: [audioPath + '/pop4.ogg', audioPath + '/pop4.mp3'] }),
   ];
 
   const comboSounds = [
-    new Howl({ src: ['audio/naja.mp3'] }),
-    new Howl({ src: ['audio/najaaaaa.mp3'] }),
-    new Howl({ src: ['audio/thaiwin.mp3'] }),
-    new Howl({ src: ['audio/not-my-senpai.mp3'] }),
+    new Howl({ src: [audioPath + '/naja.mp3'] }),
+    new Howl({ src: [audioPath + '/najaaaaa.mp3'] }),
+    new Howl({ src: [audioPath + '/thaiwin.mp3'] }),
+    new Howl({ src: [audioPath + '/not-my-senpai.mp3'] }),
   ];
 
   let najaCount = 100;
@@ -327,7 +329,6 @@
             {Math.round($total).toLocaleString()}
           </span>
         </div>
-<<<<<<< HEAD
         {#if !showFullLeaderboard}
         <div class="flex justify-between items-center pt-2">
           {#each leaderboardGuilds.slice(0, 3) as guild, idx}
@@ -345,62 +346,13 @@
               {#if guild.rate > 0}
                 <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
                 >
-=======
-      {/each}
-      <p class="text-gray-700 text-center w-full mt-2">See more</p>
-    </div> -->
-
-    <!-- <div class={`modal ${showFullLeaderboard && 'open'}`}> -->
-      <div class="modalContent w-80 {`${showFullLeaderboard && 'open'}`}">
-        <div class="modalHeader" on:click={showHideLeaderboard}>
-          <div class="title flex justify-between items-center {`${!showFullLeaderboard && 'pb-1 border-b-1'}`}">
-            <span class="font-medium">Leaderboard</span>
-            <span class="text-right font-sm text-gray-400">
-              {#if showFullLeaderboard}
-                close
-              {:else}
-                open
->>>>>>> bef7c87 (leaderboard fits content)
               {/if}
               {guild.total.toLocaleString()}
             </span>
           </div>
-<<<<<<< HEAD
-          <div class="top-three flex justify-between items-center pt-2 {`${showFullLeaderboard && 'hide'}`}">
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
         {/each}
         {/if}
       </div>
-=======
-          {#if !showFullLeaderboard}
-          <div class="top-three flex justify-between items-center pt-2">
-=======
-          <div class="top-three flex justify-between items-center pt-2 {`${showFullLeaderboard && 'hide'}`}">
->>>>>>> 69cdda3 (max out leaderboard width when top-three element is hidden)
->>>>>>> narze-main
-            {#each leaderboardGuilds.slice(0, 3) as guild, idx}
-              <span>{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span>
-            {/each}
-          </div>
-        </div>
-        <div class="modalBody">
-          {#each leaderboardGuilds as guild, idx}
-            <div class="flex">
-              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
-              <span>
-                {#if guild.rate > 0}
-                  <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
-                  >
-                {/if}
-                {guild.total.toLocaleString()}
-              </span>
-            </div>
-          {/each}
-        </div>
-      <!-- </div> -->
->>>>>>> bef7c87 (leaderboard fits content)
     </div>
   {/if}
 
@@ -451,7 +403,6 @@
   }
 
   .modalContent {
-    --max-leaderboard-height: 60vh; /* Change this value according to your needs */
     position: absolute;
     /* top: 50%; */
     bottom: 0;
@@ -459,18 +410,8 @@
     /* transform: translate(-50%, -50%); */
     /* min-height: 30%; */
     min-width: 50%;
-    width: fit-content;
     background-color: white;
-    transition: max-height 0.4s;
     border-radius: 10px 10px 0 0;
-    overflow-y: hidden;
-    /* TODO: Make height not be estimated? */
-    max-height: 5.25rem; /* Estimate height of modalHeader */
-  }
-
-  .modalContent.open {
-    /* TODO: Make height not be estimated? */
-    max-height: calc(var(--max-leaderboard-height) + 3.05rem) /* 3.05rem is an estimated value */;
   }
 
   .modalHeader {
@@ -481,35 +422,16 @@
     border-bottom: 1px solid #eaeaea;
     white-space: nowrap;
     overflow-y: hidden;
-    cursor: pointer;
   }
 
-  .modalHeader .top-three {
-    gap: 0.75rem;
-<<<<<<< HEAD
-  }
-
-  .modalHeader .top-three.hide {
-    visibility: hidden;
-    padding: 0;
-    margin: 0;
-    height: 0;
-  }
-
-=======
-  }
-
-  .modalHeader .top-three.hide {
-    visibility: hidden;
-    padding: 0;
-    margin: 0;
-    height: 0;
-  }
-
->>>>>>> narze-main
   .modalBody {
-    max-height: var(--max-leaderboard-height);
+    max-height: .001vh;
+    transition: max-height 0.4s;
+  }
+
+  .modalBody.open {
     overflow-y: scroll;
     padding: 0.75rem;
+    max-height: 60vh; /* Change this value according to your needs */
   }
 </style>
