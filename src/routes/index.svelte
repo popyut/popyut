@@ -11,7 +11,7 @@
   import { goto } from '$app/navigation';
 
   import { count } from '../lib/store';
-  import { guilds } from '../lib/guilds';
+  import { guilds, getName, getSlug } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
   const audioPath = 'https://storage.googleapis.com/assets.prayut.click/sounds';
@@ -154,10 +154,10 @@
     const city = geoRes.data.city;
     cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
 
-    guildName = cityGuild?.th;
+    guildName = getName(cityGuild);
 
     if (browser) {
-      goto(`?g=${getGuildSlug(cityGuild)}`, { replaceState: true });
+      goto(`?g=${getSlug(cityGuild)}`, { replaceState: true });
     }
   }
 
@@ -165,10 +165,10 @@
     const guildId: string = e.target.value;
     cityGuild = guilds.find((g) => g.id === +guildId);
 
-    guildName = cityGuild?.th;
+    guildName = getName(cityGuild);
 
     if (browser) {
-      goto(`?g=${getGuildSlug(cityGuild)}`, { replaceState: true });
+      goto(`?g=${getSlug(cityGuild)}`, { replaceState: true });
     }
   }
 
@@ -186,9 +186,9 @@
       const guildParam = searchParams.get('g');
 
       if (guildParam) {
-        cityGuild = guilds.find((g) => getGuildSlug(g) === guildParam);
+        cityGuild = guilds.find((g) => getSlug(g) === guildParam);
 
-        guildName = cityGuild?.th;
+        guildName = getName(cityGuild);
       } else {
         fetchGeoData();
       }
@@ -204,16 +204,6 @@
         showBodyLeader = showFullLeaderboard;
       }, 400);
     }
-  }
-
-  function getGuildSlug({ custom, en, slug }) {
-    if (custom) {
-      return slug;
-    }
-
-    const name = en.toLowerCase().split(' ').join('');
-    const nameWithSuffix = name.replace(/[aeiou]$/, '') + 'ian';
-    return nameWithSuffix;
   }
 
   setGuildFromQueryString();
@@ -282,7 +272,7 @@
   >
     <option>เลือก Guild ของคุณ</option>
     {#each guilds as guild}
-      <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
+      <option value={guild.id} selected={guildName === getName(guild)}>{getName(guild)}</option>
     {/each}
   </select>
 

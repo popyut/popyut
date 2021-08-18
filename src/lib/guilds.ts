@@ -4,12 +4,17 @@ interface ProvinceGuild {
   id: number;
   en: string;
   th: string;
+  custom?: boolean;
+  slug?: string;
+  emoji?: string;
 }
 
 interface CustomGuild extends ProvinceGuild {
   id: number;
   custom: boolean;
   slug: string;
+  emoji: string;
+  en?: string;
 }
 
 export const guilds: Array<Guild> = [
@@ -92,24 +97,42 @@ export const guilds: Array<Guild> = [
   { en: 'Narathiwat', th: 'นราธิวาส' },
   { en: 'Phatthaya', th: 'พัทยา' },
   {
+    // 79
     custom: true,
-    en: 'Hatyai Call Out',
     th: 'Hatyai Call Out',
     emoji: '🍗',
     slug: 'hatyai_call_out',
   },
   {
+    // 80
     custom: true,
-    en: '9ทุน',
     th: '9ทุน',
     emoji: '😎',
     slug: '9tun',
   },
   {
+    // 81
     custom: true,
-    en: 'Onlyfans TH',
     th: 'Onlyfans TH',
     emoji: '💸',
     slug: 'onlyfans_th',
   },
 ].map((entry, idx) => ({ id: idx + 1, ...entry }));
+
+export function getName({ custom, th, emoji }: Guild): string {
+  if (custom) {
+    return `${emoji} ${th}`;
+  }
+
+  return th;
+}
+
+export function getSlug({ custom, en, slug }: Guild): string {
+  if (custom) {
+    return slug;
+  }
+
+  const name = en.toLowerCase().split(' ').join('');
+  const nameWithSuffix = name.replace(/[aeiou]$/, '') + 'ian';
+  return nameWithSuffix;
+}
