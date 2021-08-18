@@ -11,7 +11,7 @@
   import { goto } from '$app/navigation';
 
   import { count } from '../lib/store';
-  import { guilds } from '../lib/guilds';
+  import { guilds, getName, getSlug } from '../lib/guilds';
   import Kofi from '../lib/Kofi.svelte';
 
   const audioPath = 'https://storage.googleapis.com/assets.prayut.click/sounds';
@@ -154,10 +154,10 @@
     const city = geoRes.data.city;
     cityGuild = guilds.find((g) => g.en.toLowerCase() === city.toLowerCase());
 
-    guildName = cityGuild?.th;
+    guildName = getName(cityGuild);
 
     if (browser) {
-      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
+      goto(`?g=${getSlug(cityGuild)}`, { replaceState: true });
     }
   }
 
@@ -165,10 +165,10 @@
     const guildId: string = e.target.value;
     cityGuild = guilds.find((g) => g.id === +guildId);
 
-    guildName = cityGuild?.th;
+    guildName = getName(cityGuild);
 
     if (browser) {
-      goto(`?g=${provinceGuildSlug(cityGuild.en)}`, { replaceState: true });
+      goto(`?g=${getSlug(cityGuild)}`, { replaceState: true });
     }
   }
 
@@ -186,9 +186,9 @@
       const guildParam = searchParams.get('g');
 
       if (guildParam) {
-        cityGuild = guilds.find((g) => provinceGuildSlug(g.en) === guildParam);
+        cityGuild = guilds.find((g) => getSlug(g) === guildParam);
 
-        guildName = cityGuild?.th;
+        guildName = getName(cityGuild);
       } else {
         fetchGeoData();
       }
@@ -204,12 +204,6 @@
         showBodyLeader = showFullLeaderboard;
       }, 400);
     }
-  }
-
-  function provinceGuildSlug(name: string) {
-    const provinceName = name.toLowerCase().split(' ').join('');
-    const provinceNameWithSuffix = provinceName.replace(/[aeiou]$/, '') + 'ian';
-    return provinceNameWithSuffix;
   }
 
   setGuildFromQueryString();
@@ -233,16 +227,10 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="POPYUT" />
   <meta property="og:description" content="A loud-mouthed popping dictator" />
-  <meta
-    property="og:image"
-    content={imageUrls[1]}
-  />
+  <meta property="og:image" content={imageUrls[1]} />
   <meta name="twitter:title" content="POPYUT" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta
-    name="twitter:image"
-    content={imageUrls[1]}
-  />
+  <meta name="twitter:image" content={imageUrls[1]} />
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6FLPY30SGR"></script>
@@ -284,7 +272,7 @@
   >
     <option>เลือก Guild ของคุณ</option>
     {#each guilds as guild}
-      <option value={guild.id} selected={guildName === guild.th}>{guild.th}</option>
+      <option value={guild.id} selected={guildName === getName(guild)}>{getName(guild)}</option>
     {/each}
   </select>
 
@@ -348,6 +336,14 @@
   <Kofi name="narze" />
 
   <div class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10">
+    <div class="mb-2">
+      <a
+        href="https://twitter.com/PrayutClick/status/1427336223803072513"
+        class="p-1 mb-4 bg-white rounded"
+        target="_blank"
+        rel="noreferrer">ตั้ง Guild</a
+      >
+    </div>
     <a
       href="https://twitter.com/PrayutClick"
       class="p-1 bg-white rounded"
@@ -384,6 +380,10 @@
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
+  }
+
+  select {
+    text-align-last: center;
   }
 
   #localCounter {

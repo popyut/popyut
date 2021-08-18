@@ -1,4 +1,23 @@
-export const guilds = [
+type Guild = ProvinceGuild | CustomGuild;
+
+interface ProvinceGuild {
+  id: number;
+  en: string;
+  th: string;
+  custom?: boolean;
+  slug?: string;
+  emoji?: string;
+}
+
+interface CustomGuild extends ProvinceGuild {
+  id: number;
+  custom: boolean;
+  slug: string;
+  emoji: string;
+  en?: string;
+}
+
+export const guilds: Array<Guild> = [
   { en: 'Bangkok', th: 'กรุงเทพมหานคร' },
   { en: 'Samut Prakan', th: 'สมุทรปราการ' },
   { en: 'Nonthaburi', th: 'นนทบุรี' },
@@ -76,5 +95,43 @@ export const guilds = [
   { en: 'Pattani', th: 'ปัตตานี' },
   { en: 'Yala', th: 'ยะลา' },
   { en: 'Narathiwat', th: 'นราธิวาส' },
-  { en: 'Phatthaya', th: 'พัทยา' },
+  {
+    // 78
+    custom: true,
+    th: 'Hatyai Call Out',
+    emoji: '🍗',
+    slug: 'hatyai_call_out',
+  },
+  {
+    // 79
+    custom: true,
+    th: '9ทุน',
+    emoji: '😎',
+    slug: '9tun',
+  },
+  {
+    // 80
+    custom: true,
+    th: 'Onlyfans TH',
+    emoji: '💸',
+    slug: 'onlyfans_th',
+  },
 ].map((entry, idx) => ({ id: idx + 1, ...entry }));
+
+export function getName({ custom, th, emoji }: Guild): string {
+  if (custom) {
+    return `${emoji} ${th}`;
+  }
+
+  return th;
+}
+
+export function getSlug({ custom, en, slug }: Guild): string {
+  if (custom) {
+    return slug;
+  }
+
+  const name = en.toLowerCase().split(' ').join('');
+  const nameWithSuffix = name.replace(/[aeiou]$/, '') + 'ian';
+  return nameWithSuffix;
+}
