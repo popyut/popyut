@@ -151,6 +151,20 @@ export const guilds: Array<Guild> = [
     emoji: '🍁',
     slug: 'armsohandsome',
   },
+  {
+    // 86
+    custom: true,
+    th: 'พี่น้องกะเหรี่ยงDragonOfSalween',
+    emoji: '🐉',
+    slug: 'dragon_of_salween',
+  },
+  {
+    // 87
+    custom: true,
+    th: 'maehongson not salim',
+    emoji: '❌',
+    slug: 'maehongson_not_salim',
+  },
 ].map((entry, idx) => ({ id: idx + 1, ...entry }));
 
 export function getName({ custom, th, emoji }: Guild): string {
