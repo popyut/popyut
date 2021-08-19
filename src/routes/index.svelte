@@ -334,6 +334,7 @@
   {/if}
 
   <div class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10">
+    <!--
     <div class="mb-2">
       <a
         href="https://twitter.com/PrayutClick/status/1427336223803072513"
@@ -348,7 +349,6 @@
       target="_blank"
       rel="noreferrer">@PrayutClick</a
     >
-    <!--
     <a
       href="https://thailand-grand-opening.web.app"
       class="p-1 bg-white rounded"
