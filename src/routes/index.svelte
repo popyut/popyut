@@ -333,8 +333,6 @@
     </div>
   {/if}
 
-  <Kofi name="narze" />
-
   <div class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10">
     <div class="mb-2">
       <a
@@ -349,12 +347,6 @@
       class="p-1 bg-white rounded"
       target="_blank"
       rel="noreferrer">@PrayutClick</a
-    >
-    <a
-      href="https://github.com/narze/popyut"
-      class="p-1 bg-white rounded"
-      target="_blank"
-      rel="noreferrer">GitHub</a
     >
     <!--
     <a
