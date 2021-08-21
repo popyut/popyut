@@ -309,7 +309,7 @@
           <div class="flex sm:justify-between items-center pt-2 justify-center">
             {#each leaderboardGuilds.slice(0, 3) as guild, idx}
               <span class={idx === 0 ? 'block' : idx === 1 ? 'hidden sm:block' : 'hidden lg:block'}
-                >{idx + 1}. {guild.emoji} {guild.name}: {abbreviateNumber(guild.total)}</span
+                >{idx + 1}. {guild.emoji} {guild.name.replace(/thailand/i, "████████")}: {abbreviateNumber(guild.total)}</span
               >
             {/each}
           </div>
@@ -319,7 +319,7 @@
         {#if showBodyLeader}
           {#each leaderboardGuilds as guild, idx}
             <div class="flex">
-              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name}</span>
+              <span class="flex-1">{idx + 1}. {guild.emoji} {guild.name.replace(/thailand/i, "████████")}</span>
               <span>
                 {#if guild.rate > 0}
                   <span class="text-green-400 text-xs mr-2">{abbreviateNumber(guild.rate)} PPS</span
