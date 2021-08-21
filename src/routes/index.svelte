@@ -54,8 +54,9 @@
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
   const imageUrls = [
-    'https://storage.googleapis.com/assets.prayut.click/images/popyut1.jpg',
-    'https://storage.googleapis.com/assets.prayut.click/images/popyut2.jpg',
+    'https://i.imgur.com/grcwlVS.png',
+    // 'https://storage.googleapis.com/assets.prayut.click/images/popyut1.jpg',
+    // 'https://storage.googleapis.com/assets.prayut.click/images/popyut2.jpg',
   ];
 
   function incrementCount() {
