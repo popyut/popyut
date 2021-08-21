@@ -140,9 +140,9 @@ export const guilds: Array<Guild> = [
   {
     // 84
     custom: true,
-    th: 'Republic of Thailand',
+    th: 'Republic of ████████',
     emoji: '🗽',
-    slug: 'republic_of_thailand',
+    slug: 'republic_of_████████',
   },
   {
     // 85
