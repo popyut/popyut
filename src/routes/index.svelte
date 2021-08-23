@@ -54,7 +54,7 @@
   const intervalSeconds = 10;
   const axiosInstance = axios.create();
   const imageUrls = [
-    'https://i.imgur.com/grcwlVS.png',
+    'https://illegal.mdes.go.th/mdes.jpg',
     // 'https://storage.googleapis.com/assets.prayut.click/images/popyut1.jpg',
     // 'https://storage.googleapis.com/assets.prayut.click/images/popyut2.jpg',
   ];
@@ -263,7 +263,7 @@
     <img
       src={url}
       alt="Popyut"
-      class="{idx === bgIndex ? 'scale-100' : 'scale-150'} block fixed object-cover w-full h-full -z-10"
+      class="{idx === bgIndex ? 'block' : 'hidden'} fixed object-cover w-full h-full -z-10"
     />
   {/each}
 
@@ -287,7 +287,7 @@
 
   {#if leaderboardGuilds !== undefined}
     <div
-      class="modalContent absolute bottom-0 w-80 max-h-20 bg-white rounded-t-xl overflow-y-hidden border-1 {showFullLeaderboard &&
+      class="modalContent absolute bottom-0 w-80 max-h-36 sm:max-h-20 bg-white rounded-t-xl overflow-y-hidden {showFullLeaderboard &&
         'open'}"
     >
       <div
