@@ -335,34 +335,12 @@
   {/if}
 
   <div class="text-xs fixed sm:text-base bottom-4 right-4 text-right z-10">
-    <!--
-    <div class="mb-2">
-      <a
-        href="https://twitter.com/PrayutClick/status/1427336223803072513"
-        class="p-1 mb-4 bg-white rounded"
-        target="_blank"
-        rel="noreferrer">ตั้ง Guild</a
-      >
-    </div>
     <a
-      href="https://twitter.com/PrayutClick"
+      href="https://github.com/popyut"
       class="p-1 bg-white rounded"
       target="_blank"
-      rel="noreferrer">@PrayutClick</a
+      rel="noreferrer">Github</a
     >
-    <a
-      href="https://thailand-grand-opening.web.app"
-      class="p-1 bg-white rounded"
-      target="_blank"
-      rel="noreferrer">120วันเปิดประเทศ?</a
-    >
-    <a
-      href="https://watasalim.vercel.app"
-      class="p-1 bg-white rounded"
-      target="_blank"
-      rel="noreferrer">วาทะสลิ่มสุดเจ๋ง</a
-    >
-    -->
   </div>
 </main>
 
