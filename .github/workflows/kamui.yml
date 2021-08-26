@@ -1,0 +1,18 @@
+on: [push]
+
+jobs:
+  kamui:
+    runs-on: ubuntu-latest
+    name: Kamui
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - id: kamui
+        uses: popyut/kamui@v1
+
+      - name: Force push
+        run: |-
+          git push -f
+
